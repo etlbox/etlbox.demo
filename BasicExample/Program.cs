@@ -9,11 +9,10 @@ namespace BasicExample
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
             var masterConnection = new SqlConnectionManager("Data Source=.;Integrated Security=false;User=sa;password=reallyStrongPwd123");
-
             DropDatabaseTask.DropIfExists(masterConnection, "demo");
             CreateDatabaseTask.Create(masterConnection, "demo");
 
