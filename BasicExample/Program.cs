@@ -5,7 +5,7 @@ using ALE.ETLBox.ConnectionManager;
 using ALE.ETLBox.ControlFlow;
 using ALE.ETLBox.DataFlow;
 
-namespace Demo
+namespace BasicExample
 {
     class Program
     {
@@ -42,10 +42,5 @@ namespace Demo
                 col2 => Console.WriteLine(col2.ToString()));
         }
 
-        public class MyData
-        {
-            public string Col1 { get; set; }
-            public string Col2 { get; set; }
-        }
     }
 }
