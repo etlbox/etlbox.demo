@@ -5,7 +5,7 @@ using ALE.ETLBox.DataFlow;
 using System;
 using System.Collections.Generic;
 
-namespace SimpeFlow
+namespace ALE.SimpeFlow
 {
     class Program
     {

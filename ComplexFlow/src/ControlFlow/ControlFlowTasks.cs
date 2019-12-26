@@ -34,13 +34,13 @@ namespace ALE.ETLBoxDemo {
             //SqlTask.ExecuteNonQuery("sql with go keyword", @"insert into demo.table1 (value) select '####';
             //go 2");
 
-            ControlFlow.CurrentDbConnection = new SMOConnectionManager(new ConnectionString(@"Data Source=.\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=DemoDB;"));
+            //ControlFlow.CurrentDbConnection = new SMOConnectionManager(new ConnectionString(@"Data Source=.\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=DemoDB;"));
             SqlTask.ExecuteNonQuery("sql with go keyword", @"insert into demo.table1 (value) select '####';
             go 2");
 
-            AddFileGroupTask.AddFileGroup("FGName", "DemoDB", "200MB", "10MB", isDefaultFileGroup: true);
+            //AddFileGroupTask.AddFileGroup("FGName", "DemoDB", "200MB", "10MB", isDefaultFileGroup: true);
 
-            CRUDProcedureTask.CreateOrAlter("demo.proc1", "select 1 as test");
+            //CRUDProcedureTask.CreateOrAlter("demo.proc1", "select 1 as test");
         }
     }
 }

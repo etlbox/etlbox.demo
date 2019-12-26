@@ -5,7 +5,7 @@ using ALE.ETLBox.ConnectionManager;
 using ALE.ETLBox.ControlFlow;
 using ALE.ETLBox.DataFlow;
 
-namespace BasicExample
+namespace ALE.BasicExample
 {
     class Program
     {
