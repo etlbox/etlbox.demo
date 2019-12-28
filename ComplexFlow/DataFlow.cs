@@ -8,14 +8,14 @@ using System.Globalization;
 using System.Linq;
 
 namespace ALE.ComplexFlow {
-    public class DataFlowTasks {
+    public class DataFlow {
 
         public void Run() {
             //Read data from csv file
             CSVSource sourceOrderData = new CSVSource("DemoData.csv");
             sourceOrderData.Configuration.Delimiter = ";";
 
-            //Transfrom into Order object
+            //Transform into Order object
             RowTransformation<string[], Order> transIntoObject = new RowTransformation<string[], Order>(CSVIntoObject);
 
             //Find corresponding customer id if customer exists in Customer table
@@ -31,9 +31,8 @@ namespace ALE.ComplexFlow {
             DBDestination<Order> destOrderTable = new DBDestination<Order>("demo.Orders");
 
             //Create rating for existing customers based total of order amount
-            BlockTransformation<Order> blockOrders = new BlockTransformation<Order>(BlockTransformOrders);
+            BlockTransformation<Order,Rating> blockOrders = new BlockTransformation<Order,Rating>(BlockTransformOrders);
             DBDestination<Rating> destRating = new DBDestination<Rating>("demo.CustomerRating");
-            RowTransformation<Order, Rating> transOrderIntoCust = new RowTransformation<Order, Rating>(OrderIntoRating);
 
             //Link the components
             sourceOrderData.LinkTo<Order>(transIntoObject)
@@ -43,8 +42,7 @@ namespace ALE.ComplexFlow {
 
             multiCast.LinkTo(blockOrders);
 
-            blockOrders.LinkTo(transOrderIntoCust, ord => ord.Rating != null, ord => ord.Rating == null);
-            transOrderIntoCust.LinkTo(destRating);
+            blockOrders.LinkTo(destRating);
 
             //Execute the data flow synchronous
             sourceOrderData.Execute();
@@ -73,24 +71,17 @@ namespace ALE.ComplexFlow {
             }
         }
 
-        private List<Order> BlockTransformOrders(List<Order> allOrders) {
+        private List<Rating> BlockTransformOrders(List<Order> allOrders) {
             List<int> allCustomerKeys = allOrders.Select(ord => ord.CustomerKey).Distinct().ToList();
+            List<Rating> result = new List<Rating>();
             foreach (int custKey in allCustomerKeys) {
-                var firstOrder = allOrders.Where(ord => ord.CustomerKey == custKey).FirstOrDefault();
-                firstOrder.Rating = new Rating();
-                firstOrder.Rating.CustomerKey = custKey;
-                firstOrder.Rating.TotalAmount = allOrders.Where(ord => ord.CustomerKey == custKey).Sum(ord => ord.Amount);
-                firstOrder.Rating.RatingValue = firstOrder.Rating.TotalAmount > 50 ? "A" : "F";
+                Rating newRating = new Rating();
+                newRating.CustomerKey = custKey;
+                newRating.TotalAmount = allOrders.Where(ord => ord.CustomerKey == custKey).Sum(ord => ord.Amount);
+                newRating.RatingValue = newRating.TotalAmount > 50 ? "A" : "F";
+                result.Add(newRating);
             }
-            return allOrders;
-        }
-
-        private Rating OrderIntoRating(Order orderRow) {
-            return new Rating() {
-                CustomerKey = orderRow.CustomerKey,
-                TotalAmount = orderRow.Rating.TotalAmount,
-                RatingValue = orderRow.Rating.RatingValue
-            };
+            return result;
         }
     }
 }

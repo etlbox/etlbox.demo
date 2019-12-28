@@ -11,6 +11,5 @@ namespace ALE.ComplexFlow
         public decimal Amount { get; set; }
         public int CustomerKey { get; set; }
         public string CustomerName { get; set; }
-        public Rating Rating { get; set; }
     }
 }

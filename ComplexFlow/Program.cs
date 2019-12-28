@@ -15,8 +15,8 @@ namespace ALE.ComplexFlow {
 
             Console.WriteLine("Running data flow");
             StartLoadProcessTask.Start("Demo Process");
-            DataFlowTasks dft = new DataFlowTasks();
-            dft.Run();
+            DataFlow df = new DataFlow();
+            df.Run();
             EndLoadProcessTask.End("Finishing demo");
             Console.WriteLine("Dafaflow finished...");
 
