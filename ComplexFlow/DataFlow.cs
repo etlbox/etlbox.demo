@@ -17,31 +17,29 @@ namespace ALE.ComplexFlow {
 
             //Transform into Order object
             RowTransformation<string[], Order> transIntoObject = new RowTransformation<string[], Order>(CSVIntoObject);
+            sourceOrderData.LinkTo(transIntoObject);
 
             //Find corresponding customer id if customer exists in Customer table
-            DBSource<Customer> sourceCustomerData = new DBSource<Customer>("demo.Customer");
+            DBSource<Customer> sourceCustomerData = new DBSource<Customer>("customer");
             LookupCustomerKey lookupCustKeyClass = new LookupCustomerKey();
             Lookup<Order, Order, Customer> lookupCustomerKey = new Lookup<Order, Order, Customer>(
                 lookupCustKeyClass.FindKey, sourceCustomerData, lookupCustKeyClass.LookupData);
+            transIntoObject.LinkTo(lookupCustomerKey);
 
             //Split data
             Multicast<Order> multiCast = new Multicast<Order>();
+            lookupCustomerKey.LinkTo(multiCast);
 
             //Store Order in Orders table
-            DBDestination<Order> destOrderTable = new DBDestination<Order>("demo.Orders");
+            DBDestination<Order> destOrderTable = new DBDestination<Order>("orders");
+            multiCast.LinkTo(destOrderTable);
 
             //Create rating for existing customers based total of order amount
             BlockTransformation<Order,Rating> blockOrders = new BlockTransformation<Order,Rating>(BlockTransformOrders);
-            DBDestination<Rating> destRating = new DBDestination<Rating>("demo.CustomerRating");
-
-            //Link the components
-            sourceOrderData.LinkTo<Order>(transIntoObject)
-                           .LinkTo(lookupCustomerKey)
-                           .LinkTo(multiCast)
-                           .LinkTo(destOrderTable);
-
             multiCast.LinkTo(blockOrders);
 
+            //Store the rating in the customer rating table
+            DBDestination<Rating> destRating = new DBDestination<Rating>("customer_rating");
             blockOrders.LinkTo(destRating);
 
             //Execute the data flow synchronous
