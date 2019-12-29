@@ -39,6 +39,9 @@ namespace ALE.BasicExample
             "select Col1, Col2 from Table1",
                 col1 => Console.WriteLine(col1.ToString() + ","),
                 col2 => Console.WriteLine(col2.ToString()));
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
         }
 
     }

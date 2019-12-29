@@ -49,6 +49,9 @@ namespace ALE.SimpeFlow
             source.Execute();
 
             dest.Wait();
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
         }
     }
 }
