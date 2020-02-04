@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ETLBox" Version="1.7.3" />
+    <PackageReference Include="ETLBox" Version="1.8.0-alpha" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,10 +17,6 @@
     <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="src\DataFlow\" />
   </ItemGroup>
 
 </Project>
