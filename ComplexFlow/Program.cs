@@ -10,7 +10,7 @@ namespace ALE.ComplexFlow {
     class Program {
         static void Main(string[] args) {
 
-            var connectionString = new ConnectionString(
+            var connectionString = new SqlConnectionString(
                 @"Data Source=.;Initial Catalog=demo;Integrated Security=false;User=sa;password=reallyStrongPwd123");
 
             ControlFlow.DefaultDbConnection = new SqlConnectionManager(connectionString);
@@ -30,7 +30,7 @@ namespace ALE.ComplexFlow {
             Console.WriteLine("Running data flow");
 
             //Read data from csv file
-            CSVSource sourceOrderData = new CSVSource("DemoData.csv");
+            CsvSource<string[]> sourceOrderData = new CsvSource<string[]>("DemoData.csv");
             sourceOrderData.Configuration.Delimiter = ";";
 
             //Transform into Order object
@@ -48,7 +48,7 @@ namespace ALE.ComplexFlow {
             sourceOrderData.LinkTo(transIntoObject);
 
             //Find corresponding customer id if customer exists in Customer table
-            DBSource<Customer> sourceCustomerData = new DBSource<Customer>("customer");
+            DbSource<Customer> sourceCustomerData = new DbSource<Customer>("customer");
             LookupTransformation<Order, Customer> lookupCustomerKey = new LookupTransformation<Order, Customer>(sourceCustomerData);
             transIntoObject.LinkTo(lookupCustomerKey);
 
@@ -57,7 +57,7 @@ namespace ALE.ComplexFlow {
             lookupCustomerKey.LinkTo(multiCast);
 
             //Store Order in Orders table
-            DBDestination<Order> destOrderTable = new DBDestination<Order>("orders");
+            DbDestination<Order> destOrderTable = new DbDestination<Order>("orders");
             multiCast.LinkTo(destOrderTable);
 
             //Create rating for existing customers based total of order amount
@@ -66,7 +66,7 @@ namespace ALE.ComplexFlow {
             multiCast.LinkTo(aggregation);
 
             //Store the rating in the customer rating table
-            DBDestination<Rating> destRating = new DBDestination<Rating>("customer_rating");
+            DbDestination<Rating> destRating = new DbDestination<Rating>("customer_rating");
             aggregation.LinkTo(destRating);
 
             //Execute the data flow synchronous

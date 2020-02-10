@@ -31,7 +31,7 @@ namespace ALE.SimpeFlow
 
             SqlConnectionManager connMan = new SqlConnectionManager("Data Source=.;Initial Catalog=demo;Integrated Security=false;User=sa;password=reallyStrongPwd123");
 
-            CSVSource source = new CSVSource("demodata.csv");
+            CsvSource<string[]> source = new CsvSource<string[]>("demodata.csv");
 
             RowTransformation<string[], Order> rowTrans = new RowTransformation<string[], Order>(
               row => new Order()
@@ -42,7 +42,7 @@ namespace ALE.SimpeFlow
                   Price = double.Parse(row[4]) * 100
               });
 
-            DBDestination<Order> dest = new DBDestination<Order>(connMan, "OrderTable");
+            DbDestination<Order> dest = new DbDestination<Order>(connMan, "OrderTable");
 
             source.LinkTo(rowTrans);
             rowTrans.LinkTo(dest);

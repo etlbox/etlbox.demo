@@ -25,10 +25,10 @@ namespace ALE.BasicExample
                 new TableColumn("Col2","smallint",allowNulls:true)
             });
 
-            CSVSource source = new CSVSource("input.csv");
+            CsvSource<string[]> source = new CsvSource<string[]>("input.csv");
             RowTransformation<string[], MyData> row = new RowTransformation<string[], MyData>(
             input => new MyData() { Col1 = input[0], Col2 = input[1] });
-            DBDestination<MyData> dest = new DBDestination<MyData>(dbConnection, "Table1");
+            DbDestination<MyData> dest = new DbDestination<MyData>(dbConnection, "Table1");
 
             source.LinkTo(row);
             row.LinkTo(dest);

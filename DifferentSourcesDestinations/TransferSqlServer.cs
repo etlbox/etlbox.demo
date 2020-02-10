@@ -40,14 +40,14 @@ namespace ALE.DifferentDBs
             SqlConnectionManager sqlConMan = new SqlConnectionManager(SqlServerConnectionString);
 
             //Transfer across databases
-            DBSource<NameListElement> source = new DBSource<NameListElement>(postgresConMan, "NameTable");
+            DbSource<NameListElement> source = new DbSource<NameListElement>(postgresConMan, "NameTable");
             RowTransformation<NameListElement> trans = new RowTransformation<NameListElement>(
                 row =>
                 {
                     row.FullName = row.LastName + "," + row.FirstName;
                     return row;
                 }) ;
-            DBDestination<NameListElement> dest = new DBDestination<NameListElement>(sqlConMan, "FullNameTable");
+            DbDestination<NameListElement> dest = new DbDestination<NameListElement>(sqlConMan, "FullNameTable");
             source.LinkTo(trans);
             trans.LinkTo(dest);
 

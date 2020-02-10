@@ -35,15 +35,15 @@ namespace ALE.DifferentSourcesDestinations
         {
             PostgresConnectionManager conMan = new PostgresConnectionManager(PostgresConnectionString);
             //Import CSV
-            CSVSource sourceCSV = new CSVSource("NameList.csv");
-            DBDestination importDest = new DBDestination(conMan, "NameTable");
+            CsvSource sourceCSV = new CsvSource("NameList.csv");
+            DbDestination importDest = new DbDestination(conMan, "NameTable");
             sourceCSV.LinkTo(importDest);
             sourceCSV.Execute();
             importDest.Wait();
 
             //Export again
-            DBSource<NameListElement> sourceTable = new DBSource<NameListElement>(conMan, "NameTable");
-            CSVDestination<NameListElement> destCSV = new CSVDestination<NameListElement>("Export.csv");
+            DbSource<NameListElement> sourceTable = new DbSource<NameListElement>(conMan, "NameTable");
+            CsvDestination<NameListElement> destCSV = new CsvDestination<NameListElement>("Export.csv");
             destCSV.Configuration.Delimiter = ";";
             sourceTable.LinkTo(destCSV);
             sourceTable.Execute();

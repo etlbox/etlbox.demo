@@ -12,7 +12,7 @@ namespace ALE.ComplexFlow
 {
     public static class PrepareDb
     {
-        public static void RecreateDatabase(string dbName, ConnectionString connectionString)
+        public static void RecreateDatabase(string dbName, SqlConnectionString connectionString)
         {
             var masterConnection = new SqlConnectionManager(connectionString.GetMasterConnection());
             DropDatabaseTask.DropIfExists(masterConnection, dbName);
