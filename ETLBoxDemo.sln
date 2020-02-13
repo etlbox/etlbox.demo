@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicExample", "BasicExampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpeFlow", "SimpeFlow\SimpeFlow.csproj", "{470BDC42-4F83-4CD9-8046-03E0F83B9125}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifferentSourcesDestinations", "DifferentSourcesDestinations\DifferentSourcesDestinations.csproj", "{2C516AB6-C628-4525-B590-58F3417933CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DifferentSourcesDestinations", "DifferentSourcesDestinations\DifferentSourcesDestinations.csproj", "{2C516AB6-C628-4525-B590-58F3417933CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarSchema", "StarSchema\StarSchema.csproj", "{B0CD6495-4C26-41B0-BF9B-8E1FC1D93C58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2C516AB6-C628-4525-B590-58F3417933CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C516AB6-C628-4525-B590-58F3417933CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C516AB6-C628-4525-B590-58F3417933CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0CD6495-4C26-41B0-BF9B-8E1FC1D93C58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0CD6495-4C26-41B0-BF9B-8E1FC1D93C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0CD6495-4C26-41B0-BF9B-8E1FC1D93C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0CD6495-4C26-41B0-BF9B-8E1FC1D93C58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
