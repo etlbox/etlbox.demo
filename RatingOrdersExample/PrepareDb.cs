@@ -34,7 +34,7 @@ namespace ALE.ComplexFlow
             TableDefinition CustomerTableDef = new TableDefinition("customer",
                 new List<TableColumn>() {
                     new TableColumn("Key", "int",allowNulls: false, isPrimaryKey:true, isIdentity:true),
-                    new TableColumn("FullName","nvarchar(200)", allowNulls: false),
+                    new TableColumn("Name","nvarchar(200)", allowNulls: false),
             });
 
             TableDefinition CustomerRatingTableDef = new TableDefinition("customer_rating",

@@ -4,6 +4,7 @@ using ALE.ETLBox.ControlFlow;
 using ALE.ETLBox.DataFlow;
 using ALE.ETLBox.Logging;
 using System;
+using System.Dynamic;
 using System.Globalization;
 
 namespace ALE.ComplexFlow {
@@ -30,19 +31,21 @@ namespace ALE.ComplexFlow {
             Console.WriteLine("Running data flow");
 
             //Read data from csv file
-            CsvSource<string[]> sourceOrderData = new CsvSource<string[]>("DemoData.csv");
+            CsvSource sourceOrderData = new CsvSource("DemoData.csv");
             sourceOrderData.Configuration.Delimiter = ";";
 
             //Transform into Order object
-            RowTransformation<string[], Order> transIntoObject = new RowTransformation<string[], Order>(
+            RowTransformation<ExpandoObject, Order> transIntoObject = new RowTransformation<ExpandoObject, Order>(
                 csvLine =>
                 {
+                    dynamic order = csvLine as dynamic;
                     return new Order()
                     {
-                        Number = csvLine[0],
-                        Item = csvLine[1],
-                        Amount = decimal.Parse(csvLine[2].Substring(0, csvLine[2].Length - 1), CultureInfo.GetCultureInfo("en-US")),
-                        CustomerName = csvLine[3]
+                        //Header in Csv: OrderNumber;OrderItem;OrderAmount;CustomerName
+                        Number = order.OrderNumber,
+                        Item = order.OrderItem,
+                        Amount = decimal.Parse(order.OrderAmount.ToString().Replace("€",""), CultureInfo.GetCultureInfo("en-US")),
+                        CustomerName =  order.CustomerName
                     };
                 });
             sourceOrderData.LinkTo(transIntoObject);
@@ -68,7 +71,7 @@ namespace ALE.ComplexFlow {
             DbDestination<Rating> destRating = new DbDestination<Rating>("customer_rating");
             aggregation.LinkTo(destRating);
 
-            //Execute the data flow synchronous
+            //Execute the data flow synchronously
             sourceOrderData.Execute();
             destOrderTable.Wait();
             destRating.Wait();
