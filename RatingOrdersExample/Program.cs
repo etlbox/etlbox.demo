@@ -11,7 +11,7 @@ namespace ALE.ComplexFlow {
         static void Main(string[] args) {
 
             var connectionString = new SqlConnectionString(
-                @"Data Source=.;Initial Catalog=demo;Integrated Security=false;User=sa;password=reallyStrongPwd123");
+                @"Data Source=10.211.55.2;Initial Catalog=demo;Integrated Security=false;User=sa;password=YourStrong@Passw0rd");
 
             ControlFlow.DefaultDbConnection = new SqlConnectionManager(connectionString);
 
@@ -62,7 +62,6 @@ namespace ALE.ComplexFlow {
 
             //Create rating for existing customers based total of order amount
             Aggregation<Order, Rating> aggregation = new Aggregation<Order, Rating>();
-            //BlockTransformation<Order, Rating> blockOrders = new BlockTransformation<Order, Rating>(BlockTransformOrders);
             multiCast.LinkTo(aggregation);
 
             //Store the rating in the customer rating table

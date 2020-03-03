@@ -24,7 +24,7 @@ namespace ALE.ComplexFlow
 
             TableDefinition OrderDataTableDef = new TableDefinition("orders",
                 new List<TableColumn>() {
-                    new TableColumn("OrderKey", "int",allowNulls: false, isPrimaryKey:true, isIdentity:true),
+                    new TableColumn("Key", "int",allowNulls: false, isPrimaryKey:true, isIdentity:true),
                     new TableColumn("Number","nvarchar(100)", allowNulls: false),
                     new TableColumn("Item","nvarchar(200)", allowNulls: false),
                     new TableColumn("Amount","money", allowNulls: false),
@@ -33,13 +33,13 @@ namespace ALE.ComplexFlow
 
             TableDefinition CustomerTableDef = new TableDefinition("customer",
                 new List<TableColumn>() {
-                    new TableColumn("CustomerKey", "int",allowNulls: false, isPrimaryKey:true, isIdentity:true),
-                    new TableColumn("Name","nvarchar(200)", allowNulls: false),
+                    new TableColumn("Key", "int",allowNulls: false, isPrimaryKey:true, isIdentity:true),
+                    new TableColumn("FullName","nvarchar(200)", allowNulls: false),
             });
 
             TableDefinition CustomerRatingTableDef = new TableDefinition("customer_rating",
                new List<TableColumn>() {
-                    new TableColumn("RatingKey", "int",allowNulls: false, isPrimaryKey:true, isIdentity:true),
+                    new TableColumn("Key", "int",allowNulls: false, isPrimaryKey:true, isIdentity:true),
                     new TableColumn("CustomerKey", "int",allowNulls: false),
                     new TableColumn("TotalAmount","decimal(10,2)", allowNulls: false),
                     new TableColumn("Rating","nvarchar(3)", allowNulls: false)
