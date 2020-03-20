@@ -16,15 +16,15 @@ namespace ALE.ComplexFlow
 
     public class Customer
     {
-        [RetrieveColumn(nameof(Order.CustomerKey)]
+        [RetrieveColumn(nameof(Order.CustomerKey))]
         public int Key { get; set; }
-        [MatchColumn(nameof(Order.CustomerName)]
+        [MatchColumn(nameof(Order.CustomerName))]
         public string Name { get; set; }
     }
 
     public class Rating
     {
-        [GroupColumn(nameof(Order.CustomerKey)]
+        [GroupColumn(nameof(Order.CustomerKey))]
         public int CustomerKey { get; set; }
         [AggregateColumn(nameof(Order.Amount), AggregationMethod.Sum)]
         public decimal TotalAmount { get; set; }
