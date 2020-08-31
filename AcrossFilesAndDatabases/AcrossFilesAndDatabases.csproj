@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ETLBox" Version="2.0.3" />
+    <PackageReference Include="ETLBox.Csv" Version="1.0.2" />
+    <PackageReference Include="ETLBox.Postgres" Version="1.0.2" />
+    <PackageReference Include="ETLBox.SqlServer" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NameList.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
