@@ -8,11 +8,13 @@ using System.Globalization;
 
 namespace ETLBoxDemo.RatingOrdersExample
 {
-    class Program {
-        static void Main(string[] args) {
+    class Program
+    {
+        static void Main(string[] args)
+        {
 
             var connectionString = new SqlConnectionString(
-                @"Data Source=10.211.55.2;Initial Catalog=demo;Integrated Security=false;User=sa;password=YourStrong@Passw0rd");
+                @"Data Source=localhost;Initial Catalog=demo;Integrated Security=false;User=sa;password=YourStrong@Passw0rd");
 
             ControlFlow.DefaultDbConnection = new SqlConnectionManager(connectionString);
 
@@ -44,8 +46,8 @@ namespace ETLBoxDemo.RatingOrdersExample
                         //Header in Csv: OrderNumber;OrderItem;OrderAmount;CustomerName
                         Number = order.OrderNumber,
                         Item = order.OrderItem,
-                        Amount = decimal.Parse(order.OrderAmount.ToString().Replace("€",""), CultureInfo.GetCultureInfo("en-US")),
-                        CustomerName =  order.CustomerName
+                        Amount = decimal.Parse(order.OrderAmount.ToString().Replace("€", ""), CultureInfo.GetCultureInfo("en-US")),
+                        CustomerName = order.CustomerName
                     };
                 });
             sourceOrderData.LinkTo(transIntoObject);

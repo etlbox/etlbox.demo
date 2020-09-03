@@ -2,9 +2,7 @@
 using ETLBox.ControlFlow;
 using ETLBox.ControlFlow.Tasks;
 using ETLBox.DataFlow.Connectors;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ETLBoxDemo.DifferentSourcesDestinations
 {
@@ -17,7 +15,7 @@ namespace ETLBoxDemo.DifferentSourcesDestinations
 
     public class ImportExportCSV
     {
-        public string PostgresConnectionString = @"Server=10.211.55.2;Database=ETLBox_DataFlow;User Id=postgres;Password=etlboxpassword;";
+        public string PostgresConnectionString = @"Server=localhost;Database=ETLBox_DataFlow;User Id=postgres;Password=etlboxpassword;";
 
         public void Prepare()
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ETLBoxDemo.BasicExample
+﻿namespace ETLBoxDemo.BasicExample
 {
     public class MyData
     {

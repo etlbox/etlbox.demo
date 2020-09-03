@@ -13,10 +13,10 @@ namespace ETLBoxDemo.SimpeFlow
         static void Preparation()
         {
             //Recreate database if it doesn't exist
-            SqlConnectionManager masterConnection = new SqlConnectionManager("Data Source=10.211.55.2;User Id=sa;Password=YourStrong@Passw0rd;");
+            SqlConnectionManager masterConnection = new SqlConnectionManager("Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;");
             DropDatabaseTask.DropIfExists(masterConnection, "demo");
             CreateDatabaseTask.Create(masterConnection, "demo");
-            SqlConnectionManager dbConnection = new SqlConnectionManager("Data Source=10.211.55.2;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;");
+            SqlConnectionManager dbConnection = new SqlConnectionManager("Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;");
 
             //Create destination table
             CreateTableTask.Create(dbConnection, "OrderTable", new List<TableColumn>()
@@ -46,7 +46,7 @@ namespace ETLBoxDemo.SimpeFlow
               });
 
             //DbDestination needs a connection manager pointing to the right database
-            SqlConnectionManager connMan = new SqlConnectionManager("Data Source=10.211.55.2;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;");
+            SqlConnectionManager connMan = new SqlConnectionManager("Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;");
             //Define the destination
             DbDestination<Order> dest = new DbDestination<Order>(connMan, "OrderTable");
 

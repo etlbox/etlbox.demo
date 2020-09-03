@@ -3,14 +3,13 @@ using ETLBox.ControlFlow;
 using ETLBox.ControlFlow.Tasks;
 using ETLBox.DataFlow;
 using ETLBox.DataFlow.Connectors;
-using System;
 using System.Collections.Generic;
 
 namespace ETLBoxDemo.SyncingWithMerge
 {
     class Program
     {
-        static string ConnectionString = @"Data Source=10.211.55.2;Initial Catalog=demo_sync;Integrated Security=false;User=sa;password=YourStrong@Passw0rd";
+        static string ConnectionString = @"Data Source=localhost;Initial Catalog=demo;Integrated Security=false;User=sa;password=YourStrong@Passw0rd";
         static SqlConnectionManager SqlConnection { get; set; }
         static void Main(string[] args)
         {

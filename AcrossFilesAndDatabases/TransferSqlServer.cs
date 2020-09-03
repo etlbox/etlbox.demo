@@ -3,9 +3,7 @@ using ETLBox.ControlFlow;
 using ETLBox.ControlFlow.Tasks;
 using ETLBox.DataFlow.Connectors;
 using ETLBox.DataFlow.Transformations;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ETLBoxDemo.DifferentDBs
 {
@@ -20,9 +18,9 @@ namespace ETLBoxDemo.DifferentDBs
 
     public class TransferSqlServer
     {
-        public string PostgresConnectionString = @"Server=10.211.55.2;Database=ETLBox_DataFlow;User Id=postgres;Password=etlboxpassword;";
+        public string PostgresConnectionString = @"Server=localhost;Database=ETLBox_DataFlow;User Id=postgres;Password=etlboxpassword;";
 
-        public string SqlServerConnectionString = @"Data Source=10.211.55.2;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=ETLBox_DataFlow;";
+        public string SqlServerConnectionString = @"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=ETLBox_DataFlow;";
 
         public void Prepare()
         {
@@ -47,7 +45,7 @@ namespace ETLBoxDemo.DifferentDBs
                 {
                     row.FullName = row.LastName + "," + row.FirstName;
                     return row;
-                }) ;
+                });
             DbDestination<NameListElement> dest = new DbDestination<NameListElement>(sqlConMan, "FullNameTable");
             source.LinkTo(trans);
             trans.LinkTo(dest);

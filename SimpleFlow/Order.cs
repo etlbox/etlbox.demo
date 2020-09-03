@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ETLBoxDemo.SimpeFlow
+﻿namespace ETLBoxDemo.SimpeFlow
 {
     public class Order
     {

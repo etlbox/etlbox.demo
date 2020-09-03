@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using ETLBox.Connection;
+﻿using ETLBox.Connection;
 using ETLBox.ControlFlow;
 using ETLBox.ControlFlow.Tasks;
 using ETLBox.DataFlow.Connectors;
 using ETLBox.DataFlow.Transformations;
+using System;
+using System.Collections.Generic;
 
 namespace ETLBoxDemo.BasicExample
 {
@@ -13,13 +13,13 @@ namespace ETLBoxDemo.BasicExample
         static void Main(string[] args)
         {
             //Set up the connection manager to master
-            var masterConnection = new SqlConnectionManager("Data Source=10.211.55.2;User Id=sa;Password=YourStrong@Passw0rd;");
+            var masterConnection = new SqlConnectionManager("Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;");
             //Recreate database
             DropDatabaseTask.DropIfExists(masterConnection, "demo");
             CreateDatabaseTask.Create(masterConnection, "demo");
 
             //Get connection manager to previously create database
-            var dbConnection = new SqlConnectionManager("Data Source=10.211.55.2;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;");
+            var dbConnection = new SqlConnectionManager("Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;");
 
             //Create destination table
             CreateTableTask.Create(dbConnection, "Table1", new List<TableColumn>()
