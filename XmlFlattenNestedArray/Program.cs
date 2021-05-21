@@ -40,6 +40,7 @@ namespace XmlNestedArray
         public string PaymentMethodNumber { get; set; }
         public string PaymentMethodValidTo { get; set; }
     }
+
     public class Program
     {
         static void Main(string[] args)
