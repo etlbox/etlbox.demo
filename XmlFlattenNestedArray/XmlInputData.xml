@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <customer id="1">
+    <name>Peter</name>
+    <payment_methods>
+      <payment_method>
+        <type>Credit Card</type>
+        <number>1234-5678</number>
+        <validto>01/24</validto>
+      </payment_method>
+      <payment_method>
+        <type>Wire transfer</type>
+        <number>AB12345435</number>
+      </payment_method>
+    </payment_methods>
+  </customer>
+  <customer id="2">
+    <name>Mary</name>
+    <payment_methods>
+      <payment_method>
+        <type>Credit Card</type>
+        <number>4444-5555</number>
+        <validto>12/26</validto>
+      </payment_method>
+      <payment_method>
+        <type>Wire transfer</type>
+        <number>DA1234356</number>
+      </payment_method>
+      <payment_method>
+        <type>PayPal</type>
+        <number>mary@paypal.to</number>
+      </payment_method>
+    </payment_methods>
+  </customer>
+</root>
