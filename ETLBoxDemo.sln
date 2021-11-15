@@ -32,9 +32,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlFlattenNestedArray", "Xm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PivotData", "PivotData\PivotData.csproj", "{55129B04-82DD-407B-96FE-B9C79E47A2ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctionApp", "AzureFunctionApp\AzureFunctionApp.csproj", "{C7D38C2B-3544-425D-9DC9-FDD2C250A943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctionApp", "AzureFunctionApp\AzureFunctionApp.csproj", "{C7D38C2B-3544-425D-9DC9-FDD2C250A943}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParallelExecution", "ParallelExecution\ParallelExecution.csproj", "{1A60DEF7-7DB5-48A3-9918-963DDF4AF6AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParallelExecution", "ParallelExecution\ParallelExecution.csproj", "{1A60DEF7-7DB5-48A3-9918-963DDF4AF6AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickStart", "QuickStart\QuickStart.csproj", "{1F79A747-746F-47B8-90C3-88992A044C9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{1A60DEF7-7DB5-48A3-9918-963DDF4AF6AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A60DEF7-7DB5-48A3-9918-963DDF4AF6AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A60DEF7-7DB5-48A3-9918-963DDF4AF6AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F79A747-746F-47B8-90C3-88992A044C9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F79A747-746F-47B8-90C3-88992A044C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F79A747-746F-47B8-90C3-88992A044C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F79A747-746F-47B8-90C3-88992A044C9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{55129B04-82DD-407B-96FE-B9C79E47A2ED} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
 		{C7D38C2B-3544-425D-9DC9-FDD2C250A943} = {410CEE1C-92E9-40FB-A9FA-C344D8982A61}
 		{1A60DEF7-7DB5-48A3-9918-963DDF4AF6AB} = {410CEE1C-92E9-40FB-A9FA-C344D8982A61}
+		{1F79A747-746F-47B8-90C3-88992A044C9C} = {16D5D52F-2A1A-465A-BC79-535268E5EF94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}
