@@ -26,8 +26,7 @@ namespace DataLakeDemo
     }
 
     public class SyncData
-    {
-        [AggregateColumn("Id", AggregationMethod.Max)]
+    {        
         public int SyncId { get; set; }
     }
 
@@ -45,7 +44,7 @@ namespace DataLakeDemo
             string sqlConnectionString = Environment.GetEnvironmentVariable("SqlServerConnectionString", EnvironmentVariableTarget.Process);
             string storageConnString = Environment.GetEnvironmentVariable("AzureWebJobsStorage", EnvironmentVariableTarget.Process);
 
-            var conn = new SqlConnectionManager(sqlConnectionString);
+            SqlConnectionManager conn = new SqlConnectionManager(sqlConnectionString);
 
  
             if (!DemoHelper.WasInitialized)
@@ -53,9 +52,11 @@ namespace DataLakeDemo
 
             SyncData syncDataLastRun = ReadLastSyncKey();
 
+            var parameter = new[] { new QueryParameter() { Name = "syncId", Value = syncDataLastRun.SyncId } };
             var dbSource = new DbSource<Order>() {
                 ConnectionManager = conn,
-                Sql = $"SELECT Id, Number, Details, Date FROM Orders WHERE Id > {syncDataLastRun.SyncId} ORDER BY Date"
+                Sql = $"SELECT Id, Number, Details, Date FROM Orders WHERE Id > @syncId ORDER BY Date",
+                SqlParameter = parameter
             };
 
             var jsonDest = new JsonDestination<Order>();
@@ -75,6 +76,13 @@ namespace DataLakeDemo
 
             var multicast = new Multicast<Order>();
             var aggregation = new Aggregation<Order, SyncData>();
+            aggregation.AggregateColumns = new[] {
+                new AggregateColumn() {
+                    InputValuePropName = "Id",
+                    AggregatedValuePropName = "SyncId",
+                    AggregationMethod = AggregationMethod.Max
+                }
+            };
             var syncMemoryDest = new MemoryDestination<SyncData>();
 
             /*
