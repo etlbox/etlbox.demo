@@ -15,7 +15,7 @@ namespace ETLBoxDemo.SyncingWithMerge
         {
             //SqlCon
             SqlConnection = new SqlConnectionManager(ConnectionString);
-            RecreateDatabase("demo_sync", ConnectionString);
+            RecreateDatabase("demo", ConnectionString);
             Prepare();
 
             DbSource<MyMergeRow> source = new DbSource<MyMergeRow>(SqlConnection, "source");

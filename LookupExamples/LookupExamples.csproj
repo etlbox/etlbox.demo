@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ETLBox.Csv" Version="2.5.2" />
+    <PackageReference Include="ETLBox.SqlServer" Version="2.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="InputData.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
