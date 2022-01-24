@@ -22,6 +22,12 @@ namespace LookupExamples
             ae.UsingGetInputRecordKeyFunc();
             ae.OverwritingComparisonInObject();
             Console.WriteLine("Done!");
+
+            Console.WriteLine("Running alternative examples!");
+            AlternativeExamples alte = new AlternativeExamples();
+            alte.UsingBatchTransformation();
+            alte.UsingMergeJoin();
+            Console.WriteLine("Done!");
         }
     }
 }
