@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <entry>
+    <set size="2">
+      <element>
+        <node name="A">Node 1</node>
+        <value>Value 1</value>
+      </element>
+      <element>
+        <node name="A">Node 2</node>
+        <value>Value 2</value>
+      </element>
+    </set>
+  </entry>
+  <entry>
+    <set size="3">
+      <element>
+        <node name="B">Node 3</node>
+        <value>Value 3</value>
+      </element>
+      <element>
+        <node name="B">Node 4</node>
+        <value>Value 4</value>
+      </element>
+      <element>
+        <node name="B">Node 5</node>
+        <value>Value 5</value>
+      </element>
+    </set>
+  </entry>
+</root>
