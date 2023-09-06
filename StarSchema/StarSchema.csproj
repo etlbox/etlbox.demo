@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>    
+    <Nullable>disable</Nullable>
+    <RootNamespace>ETLBoxDemo.StarSchema</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ETLBox" Version="2.6.8" />
+    <PackageReference Include="ETLBox.SqlServer" Version="2.6.8" />
+  </ItemGroup>
+
+</Project>

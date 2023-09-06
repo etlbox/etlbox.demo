@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>ETLBoxDemo.ComplexFlow</RootNamespace>
+    <RootNamespace>ETLBoxDemo.RatingOrdersExample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

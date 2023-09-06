@@ -1,0 +1,11 @@
+CustomerName,Code1,Code2,Country
+Charlie,CodeC,PAN_C,IE
+Dina,CodeD,PAN_D,
+Esther,CodeE,PAN_E,
+Frieda,,
+DuplicateInDb,CodeA,PAN_A,IE
+DuplicateInDb,CodeB,PAN_B,
+DuplicateFile_OK,CodeX,PAN,X,XX
+DuplicateFile_Error,CodeX,PAN,X,YY
+DuplicateFile2_Error,CodeC,PAN_C,
+Gustavo,CodeG,PAN_G,NO

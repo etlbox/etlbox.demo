@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatingOrdersExample", "RatingOrdersExample\RatingOrdersExample.csproj", "{58E67120-034D-4820-96C1-F7A7E6266549}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatingOrders", "RatingOrders\RatingOrders.csproj", "{58E67120-034D-4820-96C1-F7A7E6266549}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControlDataFlowBasics", "ControlDataFlowBasics\ControlDataFlowBasics.csproj", "{B411B6B4-0042-4F5E-9CAD-8DD35BB17774}"
 EndProject
@@ -44,7 +44,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LookupExamples", "LookupExa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTIntegration", "RESTIntegration\RESTIntegration.csproj", "{0457E70B-4B29-4E46-89FB-1B19BB1CD327}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonPathInExpandoObject", "JsonPathInExpandoObject\JsonPathInExpandoObject.csproj", "{6439A240-F211-4E22-812C-5CD9EB71DE3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathInExpandoObject", "JsonPathInExpandoObject\JsonPathInExpandoObject.csproj", "{6439A240-F211-4E22-812C-5CD9EB71DE3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarSchema", "StarSchema\StarSchema.csproj", "{57DFB984-847B-414F-AF09-28B61AFE8012}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataValidation", "DataValidation\DataValidation.csproj", "{BAE5A627-F530-4899-AA96-6C40EB145F8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +116,14 @@ Global
 		{6439A240-F211-4E22-812C-5CD9EB71DE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6439A240-F211-4E22-812C-5CD9EB71DE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6439A240-F211-4E22-812C-5CD9EB71DE3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57DFB984-847B-414F-AF09-28B61AFE8012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57DFB984-847B-414F-AF09-28B61AFE8012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57DFB984-847B-414F-AF09-28B61AFE8012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57DFB984-847B-414F-AF09-28B61AFE8012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE5A627-F530-4899-AA96-6C40EB145F8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE5A627-F530-4899-AA96-6C40EB145F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE5A627-F530-4899-AA96-6C40EB145F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE5A627-F530-4899-AA96-6C40EB145F8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +144,8 @@ Global
 		{54F253BA-01A4-4F1F-AB77-C207D2B7C7F0} = {410CEE1C-92E9-40FB-A9FA-C344D8982A61}
 		{0457E70B-4B29-4E46-89FB-1B19BB1CD327} = {65276FA0-FAD4-4627-A84D-D4A7064C0449}
 		{6439A240-F211-4E22-812C-5CD9EB71DE3C} = {410CEE1C-92E9-40FB-A9FA-C344D8982A61}
+		{57DFB984-847B-414F-AF09-28B61AFE8012} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
+		{BAE5A627-F530-4899-AA96-6C40EB145F8D} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}

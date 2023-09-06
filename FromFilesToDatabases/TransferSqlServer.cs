@@ -18,9 +18,9 @@ namespace ETLBoxDemo.DifferentDBs
 
     public class TransferSqlServer
     {
-        public string PostgresConnectionString = @"Server=localhost;Database=ETLBox_DataFlow;User Id=postgres;Password=etlboxpassword;";
+        public string PostgresConnectionString = @"Server=localhost;Database=demo;User Id=postgres;Password=etlboxpassword;";
 
-        public string SqlServerConnectionString = @"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=ETLBox_DataFlow;";
+        public string SqlServerConnectionString = @"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;";
 
         public void Prepare()
         {
