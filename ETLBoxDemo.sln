@@ -48,7 +48,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonPathInExpandoObject", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarSchema", "StarSchema\StarSchema.csproj", "{57DFB984-847B-414F-AF09-28B61AFE8012}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataValidation", "DataValidation\DataValidation.csproj", "{BAE5A627-F530-4899-AA96-6C40EB145F8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataValidationPart1", "DataValidationPart1\DataValidationPart1.csproj", "{BAE5A627-F530-4899-AA96-6C40EB145F8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

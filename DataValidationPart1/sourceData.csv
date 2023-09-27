@@ -1,0 +1,10 @@
+Name,Code,Custom,Country,Contact,TraceInfo
+"HoneyPot Inc ",CO110,HP,UK,"Peter",XC
+"AppleBees Corp",CO200,AB,DE,"Paul",
+" Peach United",CO301,PU,CH,"Mary",ED
+"Rainbow Software",,,,
+"Data Soft Ltd.",D1000,DS,XX,"Ruby",A
+"Data Soft Unlimted",D1000,DS,US,"Rucy",B
+"Data Hard",D1000,DS,IE,"Lucy",C
+"Unicorn 1",UNI10,U,IE,"Trippi",AS
+"Unicorn 2",UNI20,U,,X,X
