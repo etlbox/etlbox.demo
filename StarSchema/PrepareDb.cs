@@ -1,6 +1,5 @@
-﻿using ETLBox.Connection;
-using ETLBox.ControlFlow;
-using ETLBox.ControlFlow.Tasks;
+﻿using ETLBox.ControlFlow;
+using ETLBox.SqlServer;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +16,6 @@ namespace ETLBoxDemo.StarSchema
         public static void CreateOLTPTables(SqlConnectionString connectionString)
         {
             var connMan = new SqlConnectionManager(connectionString);
-            Console.WriteLine("Creating Tables & DemoData in OLTP source database");
 
             TableDefinition OrderDataTableDef = new TableDefinition("Orders",
                 new List<TableColumn>() {
@@ -47,7 +45,7 @@ namespace ETLBoxDemo.StarSchema
             //Create demo tables & fill with demo data
             OrderDataTableDef.CreateTable(connMan) ;
             CustomerTableDef.CreateTable(connMan);
-            ProductTableDef.CreateTable(connMan);
+            ProductTableDef.CreateTable(connMan);            
             SqlTask.ExecuteNonQuery(connMan, "INSERT INTO Customer VALUES('C-1000', 'Kevin Doe')");
             SqlTask.ExecuteNonQuery(connMan, "INSERT INTO Customer VALUES('C-1001','Nick Newman')");
             SqlTask.ExecuteNonQuery(connMan, "INSERT INTO Customer VALUES('C-1002','Zoe Trunk')");
@@ -67,12 +65,11 @@ namespace ETLBoxDemo.StarSchema
             SqlTask.ExecuteNonQuery(connMan, "INSERT INTO Orders VALUES(10193,'2023-01-01', 'P-00011', 'C-1002', 699)");
             SqlTask.ExecuteNonQuery(connMan, "INSERT INTO Orders VALUES(10253,'2023-01-03', 'P-00012', 'C-1002', 799)");
             SqlTask.ExecuteNonQuery(connMan, "INSERT INTO Orders VALUES(10323,'2023-01-03', 'P-00013', 'C-1002', 1299)");
-
+            
         }
 
         public static void CreateStarSchema(SqlConnectionString connectionString) {
             var connMan = new SqlConnectionManager(connectionString);
-            Console.WriteLine("Creating Tables in OLAP destination database");
 
             TableDefinition OrderFactTableDef = new TableDefinition("FactOrders",
                 new List<TableColumn>() {
