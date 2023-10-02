@@ -50,6 +50,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarSchema", "StarSchema\St
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataValidationPart1", "DataValidationPart1\DataValidationPart1.csproj", "{BAE5A627-F530-4899-AA96-6C40EB145F8D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFramework", "EntityFramework", "{F1693C57-CD9C-4590-AE32-0D3BA69A4E6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted", "GettingStarted\GettingStarted.csproj", "{E08A6098-9726-4412-9526-1881B8AC10A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +128,10 @@ Global
 		{BAE5A627-F530-4899-AA96-6C40EB145F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAE5A627-F530-4899-AA96-6C40EB145F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAE5A627-F530-4899-AA96-6C40EB145F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E08A6098-9726-4412-9526-1881B8AC10A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E08A6098-9726-4412-9526-1881B8AC10A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E08A6098-9726-4412-9526-1881B8AC10A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E08A6098-9726-4412-9526-1881B8AC10A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +154,7 @@ Global
 		{6439A240-F211-4E22-812C-5CD9EB71DE3C} = {410CEE1C-92E9-40FB-A9FA-C344D8982A61}
 		{57DFB984-847B-414F-AF09-28B61AFE8012} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
 		{BAE5A627-F530-4899-AA96-6C40EB145F8D} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
+		{E08A6098-9726-4412-9526-1881B8AC10A0} = {F1693C57-CD9C-4590-AE32-0D3BA69A4E6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}

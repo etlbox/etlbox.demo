@@ -284,7 +284,7 @@ FROM DimProduct";
             source.LinkTo(customerLookup);
             customerLookup.LinkTo(productLookup);
             productLookup.LinkTo(dest);
-
+                        
             dest.LinkErrorTo(errorLog);
 
             Network.Execute(source);
