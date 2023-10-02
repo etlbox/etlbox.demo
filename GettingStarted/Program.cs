@@ -49,10 +49,9 @@ public class Program
             data[i].UpdateDate = DateTime.Now.ToUniversalTime();
         }
 
-        //Bulk update
-        
+        //Bulk update        
         Console.WriteLine($"Bulk updating {rowsToUpdate} rows .");
-        db.BulkUpdate(data.Take(rowsToUpdate));
+        db.BulkUpdate(data);
         Console.WriteLine($"Bulk update successful.");
         Console.WriteLine($"Highest UpdateDate:" + data.Max(b => b.UpdateDate));
 
