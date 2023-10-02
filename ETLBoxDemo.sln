@@ -52,7 +52,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataValidationPart1", "Data
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFramework", "EntityFramework", "{F1693C57-CD9C-4590-AE32-0D3BA69A4E6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted", "GettingStarted\GettingStarted.csproj", "{E08A6098-9726-4412-9526-1881B8AC10A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF_GettingStarted", "EF_GettingStarted\EF_GettingStarted.csproj", "{E08A6098-9726-4412-9526-1881B8AC10A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
