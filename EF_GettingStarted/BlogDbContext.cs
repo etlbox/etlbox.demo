@@ -4,8 +4,6 @@ public class BloggingContext : DbContext
 {
     public DbSet<Blog> Blogs { get; set; }
 
-    public string DbPath { get; }
-
     public BloggingContext() {
     }
 
