@@ -1,8 +1,7 @@
-﻿using ETLBox.DataFlow;
-using ETLBox.EntityFramework.SqlServer;
+﻿using EFBox.SqlServer;
 using System.Diagnostics;
 
-int NumberOfBenchmarkRows = 100_000;
+int NumberOfBenchmarkRows = 1_000;
 CheckIfDatabaseExists("efbenchmark");
 
 RefreshBenchmarkTable("BenchmarkRows");

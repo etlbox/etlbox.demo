@@ -7,7 +7,7 @@ Guide: https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/?ta
 
 */
 
-using ETLBox.EntityFramework.SqlServer;
+using EFBox.SqlServer;
 
 namespace GettingStarted;
 
