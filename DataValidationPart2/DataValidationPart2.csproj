@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ETLBox.Csv" Version="3.0.0" />
-    <PackageReference Include="ETLBox.Json" Version="3.0.0" />
-    <PackageReference Include="ETLBox.SqlServer" Version="3.0.0" />
+    <PackageReference Include="ETLBox.Csv" Version="3.0.2" />
+    <PackageReference Include="ETLBox.Json" Version="3.0.2" />
+    <PackageReference Include="ETLBox.SqlServer" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,6 @@
 ﻿using ETLBox;
-using Microsoft.Extensions.Primitives;
 
-namespace DataValidationPart1
+namespace DataValidationPart2
 {
     public class VendorMaster
     {

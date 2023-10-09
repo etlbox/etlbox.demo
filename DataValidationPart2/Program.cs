@@ -1,12 +1,10 @@
-﻿using DataValidationPart1;
+﻿using DataValidationPart2;
 using ETLBox;
 using ETLBox.ControlFlow;
 using ETLBox.Csv;
 using ETLBox.DataFlow;
 using ETLBox.Json;
 using ETLBox.SqlServer;
-using Microsoft.Identity.Client;
-using System.Net.WebSockets;
 
 //Adjust connection string to your local database
 string SqlConnectionString = @"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;TrustServerCertificate=true";
