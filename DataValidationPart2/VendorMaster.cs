@@ -9,10 +9,10 @@ namespace DataValidationPart1
         [DbColumnMap("VendorName")]
         public string Name { get; set; }
 
-        [DistinctColumn]
+        [DistinctColumn]        
         public string Code { get; set; }
 
-        [DistinctColumn]
+        [DistinctColumn]        
         public string Custom { get; set; }
 
         public string Country { get; set; }
@@ -22,6 +22,8 @@ namespace DataValidationPart1
         [CsvHelper.Configuration.Attributes.Name("TraceInfo")]
         public string Info { get; set; }
 
+        [DbColumnMap("Id")]
+        [ValueGenerationColumn]
         public int? DbId { get; set; }
         public bool IsInDb => DbId.HasValue && DbId > 0;
 
@@ -50,6 +52,8 @@ namespace DataValidationPart1
 
         public string ErrorMessage { get; set; }
 
+        public DateTime ValidFrom { get; set; } = new DateTime(1900,1,1);
+        public DateTime ValidTo { get; set; } = new DateTime(9999,12,31);
 
     }
 
