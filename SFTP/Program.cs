@@ -36,6 +36,6 @@ client.Disconnect();
 
 //Class Definition
 public class FileData {
-    public string Line { get; set; }
+    public string? Line { get; set; }
     public int RowNumber { get; set; }
 }
