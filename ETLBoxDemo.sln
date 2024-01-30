@@ -62,7 +62,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataValidationPart3", "Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFTP", "SFTP\SFTP.csproj", "{951C5B70-6F4D-4F59-BAF3-1DA06DA21463}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETLBoxMemoryConsumption", "ETLBoxPerformanceTester\ETLBoxMemoryConsumption.csproj", "{04375E21-490C-4276-8004-01C341545618}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETLBoxMemoryConsumption", "ETLBoxMemoryConsumption\ETLBoxMemoryConsumption.csproj", "{04375E21-490C-4276-8004-01C341545618}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
