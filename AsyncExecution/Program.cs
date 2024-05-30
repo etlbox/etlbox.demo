@@ -2,9 +2,8 @@
 using ETLBox.DataFlow;
 using Serilog;
 using Serilog.Extensions.Logging;
-using System.Runtime.CompilerServices;
 
-namespace SUP94_AsyncExecution;
+namespace AsyncExecution;
 internal class Program {
     static async Task Main(string[] args) {
 
