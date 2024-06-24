@@ -1,19 +1,20 @@
-﻿using ETLBox.Connection;
+﻿using ETLBox;
 using ETLBox.ControlFlow;
-using ETLBox.ControlFlow.Tasks;
+using ETLBox.Csv;
 using ETLBox.DataFlow;
-using ETLBox.DataFlow.Connectors;
-using ETLBox.DataFlow.Transformations;
+using ETLBox.Json;
+using ETLBox.SqlServer;
+using Serilog;
+using Serilog.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace QuickStart
-{
-    public class OrderRow
-    {
-        [ColumnMap("Id")]
+namespace QuickStart {
+    public class OrderRow {
+        [DbColumnMap("Id")]
         public long OrderNumber { get; set; }
         public int CustomerId { get; set; }
         public string Description { get; set; }
@@ -29,11 +30,10 @@ namespace QuickStart
     //    public string Name { get; set; }
     //}
 
-    class Program
-    {
+    class Program {
         static SqlConnectionManager sqlConnMan =
-            new SqlConnectionManager("Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;");
-        
+            new SqlConnectionManager("Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;TrustServerCertificate=true");
+
         /* Data flow
          *          
          * JsonSource --> RowTransformation --> Lookup --> Multicast --> DbDestination ("orders" table)
@@ -43,9 +43,10 @@ namespace QuickStart
          */
 
 
-        static void Main(string[] args) {
+        async static Task Main(string[] args) {
             //Preparation
             RecreateTargetTable();
+            ConnectSerilog();
 
             //Step 1 - creating the components
             var source = new JsonSource<OrderRow>("https://www.etlbox.net/demo/api/orders", ResourceType.Http);
@@ -58,7 +59,7 @@ namespace QuickStart
 
             var lookup = new LookupTransformation<OrderRow, ExpandoObject>();
             lookup.Source = new CsvSource("files/customer.csv");
-            
+
             lookup.MatchColumns = new[] {
                 new MatchColumn() { LookupSourcePropertyName = "Id", InputPropertyName = "CustomerId" }
             };
@@ -79,10 +80,23 @@ namespace QuickStart
             rowTransformation.LinkTo(lookup);
             lookup.LinkTo(multicast);
             multicast.LinkTo(dbDest);
-            multicast.LinkTo(textDest, row => row.CustomerName == "Clark Kent", row => row.CustomerName != "Clark Kent");
+            multicast.LinkTo(textDest, 
+                row => row.CustomerName == "Clark Kent", 
+                row => row.CustomerName != "Clark Kent");
 
             //Step3 - executing the network
-            Network.Execute(source);  //Shortcut for Network.ExecuteAsync(source).Wait();
+            await Network.ExecuteAsync(source);  
+            //Alternative: Network.Execute(source), shortcut for Network.ExecuteAsync(source).Wait();
+        }
+
+        static void ConnectSerilog() {
+            var serilogLogger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .MinimumLevel.Debug()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {taskName}] {Message:lj}" + Environment.NewLine)
+                .CreateLogger();
+
+            Settings.LogInstance = new SerilogLoggerFactory(serilogLogger).CreateLogger("Default");
         }
 
         static void RecreateTargetTable() {
@@ -92,7 +106,7 @@ namespace QuickStart
                 new TableColumn("Id", "INT", allowNulls:false, isPrimaryKey:true),
                 new TableColumn("Description", "VARCHAR(50)"),
                 new TableColumn("CustomerName", "VARCHAR(500)"),
-                new TableColumn("Quantity", "SMALLINT")                
+                new TableColumn("Quantity", "SMALLINT")
             });
         }
     }
