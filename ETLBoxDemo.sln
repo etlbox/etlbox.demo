@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScraping", "WebScraping\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlFlattenNestedArray", "XmlFlattenNestedArray\XmlFlattenNestedArray.csproj", "{53890034-0AF5-4040-AB41-3FEADEA017D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PivotData", "PivotData\PivotData.csproj", "{55129B04-82DD-407B-96FE-B9C79E47A2ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpivotData", "UnpivotData\UnpivotData.csproj", "{55129B04-82DD-407B-96FE-B9C79E47A2ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctionApp", "AzureFunctionApp\AzureFunctionApp.csproj", "{C7D38C2B-3544-425D-9DC9-FDD2C250A943}"
 EndProject
@@ -70,7 +70,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicLoggingSerilog", "Basi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbMergePerformanceTests", "DbMergePerformanceTests\DbMergePerformanceTests.csproj", "{D3FD026C-D49C-461B-BC8C-5525C6CA224A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncExecution", "AsyncExecution\AsyncExecution.csproj", "{E3E94799-2BAF-47CE-AAE7-DE4350A6AEA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncExecution", "AsyncExecution\AsyncExecution.csproj", "{E3E94799-2BAF-47CE-AAE7-DE4350A6AEA7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PivotData", "PivotData\PivotData.csproj", "{BDEF05AD-216E-42BB-8686-1FAEDA8020BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -186,6 +188,10 @@ Global
 		{E3E94799-2BAF-47CE-AAE7-DE4350A6AEA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3E94799-2BAF-47CE-AAE7-DE4350A6AEA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3E94799-2BAF-47CE-AAE7-DE4350A6AEA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDEF05AD-216E-42BB-8686-1FAEDA8020BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDEF05AD-216E-42BB-8686-1FAEDA8020BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDEF05AD-216E-42BB-8686-1FAEDA8020BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDEF05AD-216E-42BB-8686-1FAEDA8020BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -218,6 +224,7 @@ Global
 		{D7218197-4E0A-4CC0-9006-F78033D522D8} = {410CEE1C-92E9-40FB-A9FA-C344D8982A61}
 		{D3FD026C-D49C-461B-BC8C-5525C6CA224A} = {BE9DD422-2D09-4B20-B38C-57DDCF16BC60}
 		{E3E94799-2BAF-47CE-AAE7-DE4350A6AEA7} = {BE9DD422-2D09-4B20-B38C-57DDCF16BC60}
+		{BDEF05AD-216E-42BB-8686-1FAEDA8020BD} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}

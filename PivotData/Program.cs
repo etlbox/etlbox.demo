@@ -1,81 +1,53 @@
-﻿using CsvHelper.Configuration.Attributes;
+﻿using ETLBox;
+using ETLBox.Csv;
 using ETLBox.DataFlow;
-using ETLBox.DataFlow.Connectors;
-using ETLBox.DataFlow.Transformations;
-using System;
-using System.Collections.Generic;
+using ETLBox.Helper;
+using System.Dynamic;
+using System.Globalization;
 
-namespace PivotTest
-{
-    class Program
-    {
-        public class InputData
-        {
-            public int Account { get; set; }
-            [Name("JAN")]
-            public int January { get; set; }
-            [Name("FEB")]
-            public int February { get; set; }
-            [Name("MAR")]
-            public int March { get; set; }
+CsvSource source = new CsvSource("input.csv");
+CsvDestination destination = new CsvDestination("output.csv");
+
+Aggregation aggregation = new Aggregation();
+aggregation.AggregateColumns = new[] {
+    new AggregateColumn() { InputValuePropName = "Sales", AggregationMethod = AggregationMethod.Sum, AggregatedValuePropName = "Sales" },
+};
+aggregation.GroupColumns = new[] {
+    new GroupColumn() { GroupPropNameInInput= "Category", GroupPropNameInOutput = "Category" },
+    new GroupColumn() { GroupPropNameInInput= "Month", GroupPropNameInOutput = "Month" }
+};
+
+BlockTransformation block = new BlockTransformation();
+block.BlockTransformationFunc = allRows => {
+    Dictionary<string,ExpandoObject> csvOutput = new Dictionary<string, ExpandoObject>();
+    foreach (IDictionary<string,object> row in allRows) {
+        string category = row["Category"] as string;
+        IDictionary<string,object> outputRow;
+        if (csvOutput.ContainsKey(category))
+            outputRow = csvOutput[category];
+        else {
+            outputRow = new ExpandoObject();
+            outputRow["Category"] = category;
+            csvOutput.Add(category, outputRow as ExpandoObject);
         }
 
-        public class PivotedOutput
-        {
-            public int Account { get; set; }
-            public string Month { get; set; }
-            public int MonthlyValue { get; set; }
-            
-        }
-
-        static void Main(string[] args)
-        {
-            var source = new CsvSource<InputData>("Accounts_Quartal1.csv");
-            source.Configuration.Delimiter = ";";
-
-            var trans = new RowMultiplication<InputData, PivotedOutput>();
-            trans.MultiplicationFunc = row =>
-            {
-                List<PivotedOutput> result = new List<PivotedOutput>();
-                result.Add(new PivotedOutput()
-                {
-                    Account = row.Account,
-                    Month = nameof(InputData.January),
-                    MonthlyValue = row.January
-                });
-                result.Add(new PivotedOutput()
-                {
-                    Account = row.Account,
-                    Month = nameof(InputData.February),
-                    MonthlyValue = row.February
-                });
-                result.Add(new PivotedOutput()
-                {
-                    Account = row.Account,
-                    Month = nameof(InputData.March),
-                    MonthlyValue = row.March
-                });
-                return result;
-            };
-            var dest = new CsvDestination<PivotedOutput>("AccountNumbers_Pivoted.csv");
-            dest.Configuration.HasHeaderRecord = false;
-
-            source.LinkTo(trans);
-            trans.LinkTo(dest);
-
-            Network.Execute(source);
-
-            /* AccountNumbers_Pivoted.csv output:             
-                4711,January,10
-                4711,February,11
-                4711,March,12
-                4712,January,20
-                4712,February,21
-                4712,March,22
-                4713,January,30
-                4713,February,31
-                4713,March,32
-            */
-        }
+        outputRow.Add(row["Month"] as string, row["Sales"]);
     }
-}
+
+    return csvOutput.Values.ToArray();
+};
+
+source.LinkTo(aggregation);
+aggregation.LinkTo(block);
+block.LinkTo(destination);
+
+Network.Execute(source);
+
+Console.WriteLine(File.ReadAllText("output.csv"));  
+
+//Output
+/*
+Category,Jan,Feb
+A,150,150
+B,200
+*/

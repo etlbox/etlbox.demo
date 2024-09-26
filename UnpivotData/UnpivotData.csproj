@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ETLBox" Version="2.4.1" />
+    <PackageReference Include="ETLBox.Csv" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Accounts_Quartal1.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
