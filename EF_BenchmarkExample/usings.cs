@@ -7,5 +7,4 @@ global using Microsoft.EntityFrameworkCore;
 global using ETLBox;
 global using System.ComponentModel.DataAnnotations.Schema;
 global using ETLBox.ControlFlow;
-global using ETLBox.SqlServer;
 global using EF_BenchmarkExample;

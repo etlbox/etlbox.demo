@@ -1,9 +1,12 @@
 ﻿using EFBox.SqlServer;
+using ETLBox.SqlServer;
 using System.Diagnostics;
 
 int NumberOfBenchmarkRowsInsert = 100_000;
-int NumberOfBenchmarkRowsUpdate = 20_000;
-int NumberOfBenchmarkRowsMerge = 20_000;
+int NumberOfBenchmarkRowsUpdate = 10_000;
+int NumberOfBenchmarkRowsMerge = 10_000;
+
+ConnectionType usedConnectionType = ConnectionType.SqlServer;
 
 CheckIfDatabaseExists("efbenchmark");
 
@@ -24,30 +27,30 @@ BulkUpdateAndDeleteEFBox();
 
 Console.WriteLine("Running benchmark for BulkMerge");
 RefreshBenchmarkTable("BenchmarkRows");
-BulkMergeEFBox();
-RefreshBenchmarkTable("BenchmarkRows");
 BulkMergeEntityFramework();
+RefreshBenchmarkTable("BenchmarkRows");
+BulkMergeEFBox();
+
 
 
 
 
 void BulkInsertEFBox() {
-    using (var db = new BenchmarkDbContext()) {
+    using (var db = new BenchmarkDbContext(usedConnectionType)) {
 
         var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsInsert);
-        MeasureExecutionTime("Benchmark EFBox BulkInsert", () => {
+        MeasureExecutionTime("  EFBox BulkInsert", () => {
             db.BulkInsert(benchmarkRows);
-
         });
     }
 }
 
 void BulkInsertEntityFramework() {
-    using (var db = new BenchmarkDbContext()) {
+    using (var db = new BenchmarkDbContext(usedConnectionType)) {
 
         var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsInsert);
         db.BenchmarkRows.AddRange(benchmarkRows);
-        MeasureExecutionTime("Benchmark Entitfy Framework SaveChanges", () => {
+        MeasureExecutionTime("  Entity Framework Bulk Insert", () => {
             db.SaveChanges();
         });
     }
@@ -56,12 +59,16 @@ void BulkInsertEntityFramework() {
 
 
 void BulkUpdateAndDeleteEFBox() {
-    using (var db = new BenchmarkDbContext()) {
+    using (var db = new BenchmarkDbContext(usedConnectionType)) {
+        var clutterBefore = CreateBenchmarkRows(NumberOfBenchmarkRowsUpdate);
         var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsUpdate);
+        var clutterAfter = CreateBenchmarkRows(NumberOfBenchmarkRowsUpdate);
+
+        db.BulkInsert(clutterBefore);
+        db.BulkInsert(benchmarkRows);
+        db.BulkInsert(clutterAfter);
 
         string updateValue = RandomString(1024);
-        db.BulkInsert(benchmarkRows);
-
         foreach (var b in benchmarkRows) {
             b.Value1 = updateValue;
             b.Value2 = updateValue;
@@ -75,11 +82,11 @@ void BulkUpdateAndDeleteEFBox() {
             b.Value10 = updateValue;
         }
 
-        MeasureExecutionTime("Benchmark EFBox BulkUpdate", () => {
+        MeasureExecutionTime("  EFBox BulkUpdate", () => {
             db.BulkUpdate(benchmarkRows);
         });
 
-        MeasureExecutionTime("Benchmark EFBox BulkDelete", () => {
+        MeasureExecutionTime("  EFBox BulkDelete", () => {
             db.BulkDelete(benchmarkRows);
         });
     }
@@ -87,10 +94,15 @@ void BulkUpdateAndDeleteEFBox() {
 
 
 void BulkUpdateAndDeleteEntityFramework() {
-    using (var db = new BenchmarkDbContext()) {
+    using (var db = new BenchmarkDbContext(usedConnectionType)) {
+        var clutterBefore = CreateBenchmarkRows(NumberOfBenchmarkRowsUpdate);
         var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsUpdate);
+        var clutterAfter = CreateBenchmarkRows(NumberOfBenchmarkRowsUpdate);
+        
+        db.BulkInsert(clutterBefore);
         db.BenchmarkRows.AddRange(benchmarkRows);
         db.SaveChanges();
+        db.BulkInsert(clutterAfter);
 
         string updateValue = RandomString(1024);
         foreach (var b in db.BenchmarkRows) {
@@ -107,12 +119,12 @@ void BulkUpdateAndDeleteEntityFramework() {
         }
 
 
-        MeasureExecutionTime("Benchmark Entity Framework BulkUpdate", () => {
+        MeasureExecutionTime("  Entity Framework BulkUpdate", () => {
             db.SaveChanges();
         });
 
         db.BenchmarkRows.RemoveRange(db.BenchmarkRows);
-        MeasureExecutionTime("Benchmark Entity Framework BulkDelete", () => {
+        MeasureExecutionTime("  Entity Framework BulkDelete", () => {
             db.SaveChanges();
         });
     }
@@ -121,9 +133,9 @@ void BulkUpdateAndDeleteEntityFramework() {
 
 void BulkMergeEFBox() {   
 
-    using (var db = new BenchmarkDbContext()) {
+    using (var db = new BenchmarkDbContext(usedConnectionType)) {
 
-        var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsMerge*2);        
+        var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsMerge*3);        
         db.BulkInsert(benchmarkRows);
 
         benchmarkRows.RemoveRange(0, NumberOfBenchmarkRowsMerge);
@@ -144,7 +156,7 @@ void BulkMergeEFBox() {
         var benchmarkRowsNew = CreateBenchmarkRows(NumberOfBenchmarkRowsMerge);
         benchmarkRows.AddRange(benchmarkRowsNew);
 
-        MeasureExecutionTime("Benchmark EFBox BulkMerge", () => {
+        MeasureExecutionTime("  EFBox BulkMerge", () => {
             db.BulkMerge(benchmarkRows);
         });
     }
@@ -153,9 +165,9 @@ void BulkMergeEFBox() {
 
 void BulkMergeEntityFramework() {
 
-    using (var db = new BenchmarkDbContext()) {
+    using (var db = new BenchmarkDbContext(usedConnectionType)) {
 
-        var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsMerge * 2);
+        var benchmarkRows = CreateBenchmarkRows(NumberOfBenchmarkRowsMerge * 3);
         db.BenchmarkRows.AddRange(benchmarkRows);
         db.SaveChanges();
     
@@ -178,19 +190,19 @@ void BulkMergeEntityFramework() {
         var benchmarkRowsNew = CreateBenchmarkRows(NumberOfBenchmarkRowsMerge);
         db.BenchmarkRows.AddRange(benchmarkRowsNew);
 
-        MeasureExecutionTime("Benchmark Entity Framework BulkMerge", () => {
+        MeasureExecutionTime("  Entity Framework BulkMerge", () => {
             db.SaveChanges();
         });
     }
 }
 
 static void MeasureExecutionTime(string description, Action action) {
-    Console.WriteLine($"Running: {description}");
+    Console.WriteLine($"  Running: {description}");
     Stopwatch s = new Stopwatch();
     s.Start();
     action.Invoke();
     s.Stop();
-    Console.WriteLine($"Done - time elapsed: {s.Elapsed.TotalSeconds}sec");
+    Console.WriteLine($"  Done - time elapsed: {s.Elapsed.TotalSeconds}sec");
 }
 
 
@@ -223,17 +235,15 @@ static string RandomString(int length) {
 }
 
 void CheckIfDatabaseExists(string dbName) {
-    var connDb = new SqlConnectionManager(BenchmarkDbContext.ConnectionString);
-    var dbExists = IfDatabaseExistsTask.IsExisting(BenchmarkDbContext.SqlConnectionManager, dbName);
+    var dbExists = IfDatabaseExistsTask.IsExisting(GetConnectionManager(), dbName);
     if (!dbExists)
         throw new Exception($"A database {dbName} was not found - please create database first!");
 }
 
 
 void RefreshBenchmarkTable(string tableName) {
-    Console.WriteLine("Preparing database - refreshing benchmark table");
-    DropTableTask.DropIfExists(BenchmarkDbContext.SqlConnectionManager, tableName);
-    CreateTableTask.CreateIfNotExists(BenchmarkDbContext.SqlConnectionManager,
+    DropTableTask.DropIfExists(GetConnectionManager(), tableName);
+    CreateTableTask.CreateIfNotExists(GetConnectionManager(),
         tableName,
         new List<TableColumn>() {
             new TableColumn() {
@@ -256,8 +266,88 @@ void RefreshBenchmarkTable(string tableName) {
     });
 }
 
+IConnectionManager GetConnectionManager() {
+    return usedConnectionType switch {
+        ConnectionType.SqlServer => new SqlConnectionManager(BenchmarkDbContext.SqlConnectionString),
+        //ConnectionType.Postgres => new PostgresConnectionManager(BenchmarkDbContext.PostgresConnectionString),
+        //ConnectionType.MySql => new MySqlConnectionManager(BenchmarkDbContext.MySqlConnectionString),
+        _ => throw new NotSupportedException()
+    };
+}
 
 
 
 
+//Some benchmarks:
 
+/* SqlServer:
+ * Running benchmarks for BulkInsert/BulkUpdate/BulkDelete
+Running benchmark for Bulk Inserts
+  Running:   Entity Framework Bulk Insert
+  Done - time elapsed: 31,5161238sec
+  Running:   EFBox BulkInsert
+  Done - time elapsed: 7,4981721sec
+Running benchmark for Bulk Update and Delete
+  Running:   Entity Framework BulkUpdate
+  Done - time elapsed: 12,7123246sec
+  Running:   Entity Framework BulkDelete
+  Done - time elapsed: 2,7331631sec
+  Running:   EFBox BulkUpdate
+  Done - time elapsed: 7,0074806sec
+  Running:   EFBox BulkDelete
+  Done - time elapsed: 0,8207653sec
+Running benchmark for BulkMerge
+  Running:   Entity Framework BulkMerge
+  Done - time elapsed: 12,5751387sec
+  Running:   EFBox BulkMerge
+  Done - time elapsed: 9,8358188sec
+*/
+
+ 
+/* MySql:
+Running benchmarks for BulkInsert/BulkUpdate/BulkDelete
+Running benchmark for Bulk Inserts
+  Running:   Entity Framework Bulk Insert
+  Done - time elapsed: 22,2421894sec
+  Running:   EFBox BulkInsert
+  Done - time elapsed: 16,0939463sec
+Running benchmark for Bulk Update and Delete
+  Running:   Entity Framework BulkUpdate
+  Done - time elapsed: 17,3836979sec
+  Running:   Entity Framework BulkDelete
+  Done - time elapsed: 26,8939086sec
+  Running:   EFBox BulkUpdate
+  Done - time elapsed: 3,1929282sec
+  Running:   EFBox BulkDelete
+  Done - time elapsed: 0,2094562sec
+Running benchmark for BulkMerge
+  Running:   Entity Framework BulkMerge
+  Done - time elapsed: 15,388673sec
+  Running:   EFBox BulkMerge
+  Done - time elapsed: 11,2574562sec
+
+*/
+
+/*
+ * Postgres:
+ * Running benchmarks for BulkInsert/BulkUpdate/BulkDelete
+Running benchmark for Bulk Inserts
+  Running:   Entity Framework Bulk Insert
+  Done - time elapsed: 13,5590612sec
+  Running:   EFBox BulkInsert
+  Done - time elapsed: 26,4066426sec
+Running benchmark for Bulk Update and Delete
+  Running:   Entity Framework BulkUpdate
+  Done - time elapsed: 7,8382902sec
+  Running:   Entity Framework BulkDelete
+  Done - time elapsed: 2,5075012sec
+  Running:   EFBox BulkUpdate
+  Done - time elapsed: 3,9414873sec
+  Running:   EFBox BulkDelete
+  Done - time elapsed: 1,091278sec
+Running benchmark for BulkMerge
+  Running:   Entity Framework BulkMerge
+  Done - time elapsed: 4,6927466sec
+  Running:   EFBox BulkMerge
+  Done - time elapsed: 10,3513316sec
+*/
