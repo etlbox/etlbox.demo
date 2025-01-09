@@ -6,7 +6,7 @@ public class BenchmarkDbContext : DbContext
     public BenchmarkDbContext() {
     }
 
-    public static string ConnectionString = $"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=efbenchmark;TrustServerCertificate=true";
+    public static string ConnectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB2022;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=efbenchmark;TrustServerCertificate=true;Connection Timeout=5;Encrypt=false;";
     public static SqlConnectionManager SqlConnectionManager => new SqlConnectionManager(ConnectionString);
     protected override void OnConfiguring(DbContextOptionsBuilder options) {
         options.UseSqlServer(ConnectionString);
