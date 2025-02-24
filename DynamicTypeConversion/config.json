@@ -1,0 +1,24 @@
+{
+    "sourceColumnProperties": [
+        {
+            "name": "Value1"
+        },
+        {
+            "name": "Value2"
+        }
+    ],
+    "destinationColumn": [
+        {
+            "name": "Dest1",
+            "sourceName": "Value1",
+            "convert": true,
+            "trim" :  false
+        },
+        {
+            "name": "Dest2",
+            "sourceName": "Value2",
+            "convert": false,
+            "trim": true
+        }
+    ]
+}
