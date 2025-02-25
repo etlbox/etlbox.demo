@@ -76,6 +76,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PivotData", "PivotData\Pivo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicTypeConversion", "DynamicTypeConversion\DynamicTypeConversion.csproj", "{7B5FA609-5BF7-4CD9-9EB7-301BF9E60736}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnectors", "DatabaseConnectors\DatabaseConnectors.csproj", "{A28955A8-5E28-4A48-990C-546A3B1CD01C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -198,6 +200,10 @@ Global
 		{7B5FA609-5BF7-4CD9-9EB7-301BF9E60736}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B5FA609-5BF7-4CD9-9EB7-301BF9E60736}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B5FA609-5BF7-4CD9-9EB7-301BF9E60736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A28955A8-5E28-4A48-990C-546A3B1CD01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28955A8-5E28-4A48-990C-546A3B1CD01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28955A8-5E28-4A48-990C-546A3B1CD01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28955A8-5E28-4A48-990C-546A3B1CD01C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -232,6 +238,7 @@ Global
 		{E3E94799-2BAF-47CE-AAE7-DE4350A6AEA7} = {BE9DD422-2D09-4B20-B38C-57DDCF16BC60}
 		{BDEF05AD-216E-42BB-8686-1FAEDA8020BD} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
 		{7B5FA609-5BF7-4CD9-9EB7-301BF9E60736} = {16D5D52F-2A1A-465A-BC79-535268E5EF94}
+		{A28955A8-5E28-4A48-990C-546A3B1CD01C} = {16D5D52F-2A1A-465A-BC79-535268E5EF94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}
