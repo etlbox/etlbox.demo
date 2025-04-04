@@ -1,8 +1,5 @@
-﻿using ETLBox.Connection;
-using ETLBox.ControlFlow;
-using ETLBox.ControlFlow.Tasks;
-using System;
-using System.Collections.Generic;
+﻿using ETLBox.ControlFlow;
+using ETLBox.SqlServer;
 
 namespace ETLBoxDemo.RatingOrdersExample
 {
@@ -45,10 +42,10 @@ namespace ETLBoxDemo.RatingOrdersExample
             OrderDataTableDef.CreateTable();
             CustomerTableDef.CreateTable();
             CustomerRatingTableDef.CreateTable();
-            SqlTask.ExecuteNonQuery("Fill customer table", "INSERT INTO customer values('Sandra Kettler')");
-            SqlTask.ExecuteNonQuery("Fill customer table", "INSERT INTO customer values('Nick Thiemann')");
-            SqlTask.ExecuteNonQuery("Fill customer table", "INSERT INTO customer values('Zoe Rehbein')");
-            SqlTask.ExecuteNonQuery("Fill customer table", "INSERT INTO customer values('Margit Gries')");
+            SqlTask.ExecuteNonQuery("INSERT INTO customer values('Sandra Kettler')");
+            SqlTask.ExecuteNonQuery("INSERT INTO customer values('Nick Thiemann')");
+            SqlTask.ExecuteNonQuery("INSERT INTO customer values('Zoe Rehbein')");
+            SqlTask.ExecuteNonQuery("INSERT INTO customer values('Margit Gries')");
         }
     }
 }

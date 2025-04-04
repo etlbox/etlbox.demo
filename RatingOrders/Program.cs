@@ -1,35 +1,44 @@
-﻿using ETLBox.Connection;
-using ETLBox.ControlFlow;
-using ETLBox.DataFlow.Connectors;
-using ETLBox.DataFlow.Transformations;
-using System;
+﻿using ETLBox;
+using ETLBox.Csv;
+using ETLBox.DataFlow;
+using ETLBox.SqlServer;
+using Serilog;
+using Serilog.Extensions.Logging;
 using System.Dynamic;
 using System.Globalization;
 
-namespace ETLBoxDemo.RatingOrdersExample
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
+namespace ETLBoxDemo.RatingOrdersExample {
+    class Program {
+        static void Main(string[] args) {
+            ConnectSerilog();
 
             var connectionString = new SqlConnectionString(
-                @"Data Source=localhost;Initial Catalog=demo;Integrated Security=false;User=sa;password=YourStrong@Passw0rd");
+                @"Data Source=localhost;Initial Catalog=demo;Integrated Security=false;User=sa;password=YourStrong@Passw0rd"
+            );
 
-            ControlFlow.DefaultDbConnection = new SqlConnectionManager(connectionString);
+            Settings.DefaultDbConnection = new SqlConnectionManager(connectionString);
 
             PrepareDb.RecreateDatabase("demo", connectionString);
             PrepareDb.Prepare();
 
-            ControlFlow.DefaultDbConnection = new SqlConnectionManager(connectionString);
+            Settings.DefaultDbConnection = new SqlConnectionManager(connectionString);
             Run();
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadLine();
         }
 
-        public static void Run()
-        {
+        private static void ConnectSerilog() {
+            var serilogLogger = new LoggerConfiguration()
+                            .Enrich.FromLogContext()
+                            .MinimumLevel.Information()
+                            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {taskName}] {Message:lj}" + Environment.NewLine)
+                            .CreateLogger();
+
+            Settings.LogInstance = new SerilogLoggerFactory(serilogLogger).CreateLogger("Default");
+        }
+
+        public static void Run() {
             Console.WriteLine("Running data flow");
 
             //Read data from csv file
@@ -38,11 +47,9 @@ namespace ETLBoxDemo.RatingOrdersExample
 
             //Transform into Order object
             RowTransformation<ExpandoObject, Order> transIntoObject = new RowTransformation<ExpandoObject, Order>(
-                csvLine =>
-                {
+                csvLine => {
                     dynamic order = csvLine as dynamic;
-                    return new Order()
-                    {
+                    return new Order() {
                         //Header in Csv: OrderNumber;OrderItem;OrderAmount;CustomerName
                         Number = order.OrderNumber,
                         Item = order.OrderItem,
@@ -74,9 +81,8 @@ namespace ETLBoxDemo.RatingOrdersExample
             aggregation.LinkTo(destRating);
 
             //Execute the data flow synchronously
-            sourceOrderData.Execute();
-            destOrderTable.Wait();
-            destRating.Wait();
+            Network.Execute(sourceOrderData);
+
         }
     }
 }

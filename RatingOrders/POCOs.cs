@@ -1,6 +1,4 @@
-﻿using ETLBox.DataFlow;
-using ETLBox.DataFlow.Transformations;
-
+﻿using ETLBox;
 
 namespace ETLBoxDemo.RatingOrdersExample
 {
@@ -28,7 +26,7 @@ namespace ETLBoxDemo.RatingOrdersExample
         [AggregateColumn(nameof(Order.Amount), AggregationMethod.Sum)]
         public decimal TotalAmount { get; set; }
 
-        [ColumnMap("Rating")]
+        [DbColumnMap("Rating")]
         public string RatingValue => TotalAmount > 50 ? "A" : "F";
     }
 }
