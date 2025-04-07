@@ -3,9 +3,8 @@ using ETLBox.ControlFlow;
 using ETLBox.DbExtensions;
 using ETLBox.SqlServer;
 using Microsoft.Data.SqlClient;
-using System.ComponentModel.DataAnnotations;
 
-string connectionString = "Data Source=np:\\\\.\\pipe\\LOCALDB#FDCF2A2E\\tsql\\query;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;TrustServerCertificate=true";
+string connectionString = "Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog=demo;TrustServerCertificate=true;";
 var connection = new SqlConnection(connectionString);
 
 var tableDefinition = TableDefinition.FromCLRType(ConnectionType.SqlServer, typeof(Customer));
