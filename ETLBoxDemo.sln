@@ -80,6 +80,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnectors", "Datab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fundamentals", "Fundamentals", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbExtensions", "DbExtensions", "{D6608596-5179-412C-9DF4-8E22EE1754FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbExtensions.SimpleTest", "DbExtensions.SimpleTest\DbExtensions.SimpleTest.csproj", "{36A94182-464A-4692-A99A-E735C0E7F7BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -206,6 +210,10 @@ Global
 		{A28955A8-5E28-4A48-990C-546A3B1CD01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A28955A8-5E28-4A48-990C-546A3B1CD01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A28955A8-5E28-4A48-990C-546A3B1CD01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36A94182-464A-4692-A99A-E735C0E7F7BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36A94182-464A-4692-A99A-E735C0E7F7BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36A94182-464A-4692-A99A-E735C0E7F7BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36A94182-464A-4692-A99A-E735C0E7F7BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -241,6 +249,7 @@ Global
 		{BDEF05AD-216E-42BB-8686-1FAEDA8020BD} = {5C128615-FFF5-4B08-BAA9-8280C6F84A3C}
 		{7B5FA609-5BF7-4CD9-9EB7-301BF9E60736} = {16D5D52F-2A1A-465A-BC79-535268E5EF94}
 		{A28955A8-5E28-4A48-990C-546A3B1CD01C} = {16D5D52F-2A1A-465A-BC79-535268E5EF94}
+		{36A94182-464A-4692-A99A-E735C0E7F7BB} = {D6608596-5179-412C-9DF4-8E22EE1754FF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}
