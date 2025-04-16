@@ -1,0 +1,20 @@
+{
+    "ColumnMappings": [
+        {
+            "source": "Acc#",
+            "destination": "AccountNumber"
+        },
+        {
+            "source": "FullName",
+            "destination": "Name"
+        },
+        {
+            "source": "Balance",
+            "destination": "Balance"
+        },
+        {
+            "source": "Currency",
+            "destination": "Currency"
+        }
+    ]
+}

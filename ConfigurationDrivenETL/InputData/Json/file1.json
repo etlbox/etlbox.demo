@@ -1,0 +1,126 @@
+[
+    {
+        "id": "ACC3000",
+        "name": "Emma Jackson",
+        "account": {
+            "balance": {
+                "amount": 1540.25
+            }
+        }
+    },
+    {
+        "id": "ACC3001",
+        "name": "Alice Thompson",
+        "account": {
+            "balance": {
+                "amount": 320.00
+            }
+        }
+    },
+    {
+        "id": "ACC3002",
+        "name": "Ivy Rodriguez",
+        "account": {
+            "balance": {
+                "amount": -25.60
+            }
+        }
+    },
+    {
+        "id": "ACC3003",
+        "name": "Wendy Martinez",
+        "account": {
+            "balance": {
+                "amount": 0.00,
+                "currency": "GBP"
+            }
+        }
+    },
+    {
+        "id": "ACC3004",
+        "name": "Oscar White",
+        "account": {
+            "balance": {
+                "amount": 275.90,
+                "currency": "USD"
+            }
+        }
+    },
+    {
+        "id": "ACC3005",
+        "name": "Sam Brown",
+        "account": {
+            "balance": {
+                "amount": 4830.00,
+                "currency": "EUR"
+            }
+        }
+    },
+    {
+        "id": "ACC3006",
+        "name": "Uma Thomas",
+        "account": {
+            "balance": {
+                "amount": 129.99
+            }
+        }
+    },
+    {
+        "id": "ACC3007",
+        "name": "John Rodriguez",
+        "account": {
+            "balance": {
+                "amount": 650.10,
+                "currency": "GBP"
+            }
+        }
+    },
+    {
+        "id": "ACC3008",
+        "name": "Wendy Miller",
+        "account": {
+            "balance": {
+                "amount": 842.75,
+                "currency": "USD"
+            }
+        }
+    },
+    {
+        "id": "ACC3009",
+        "name": "Leo Johnson",
+        "account": {
+            "balance": {
+                "amount": 152.35,
+            }
+        }
+    },
+    {
+        "id": "ACC3010",
+        "name": "John Jackson",
+        "account": {
+            "balance": {
+                "amount": 985.00,
+                "currency": "USD"
+            }
+        }
+    },
+    {
+        "id": "ACC3011",
+        "name": "Mary Thompson",
+        "account": {
+            "balance": {
+                "amount": 740.50,
+                "currency": "GBP"
+            }
+        }
+    },
+    {
+        "id": "ACC3012",
+        "name": "Grace Smith",
+        "account": {
+            "balance": {
+                "amount": 230.00
+            }
+        }
+    }
+]

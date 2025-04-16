@@ -1,0 +1,51 @@
+[
+    {
+        "id": "ACC3013",
+        "name": "Leo Garcia",
+        "account": {
+            "balance": {
+                "amount": 432.10
+            }
+        }
+    },
+    {
+        "id": "ACC3014",
+        "name": "John Williams",
+        "account": {
+            "balance": {
+                "amount": -12.00,
+                "currency": "USD"
+            }
+        }
+    },
+    {
+        "id": "ACC3015",
+        "name": "Carol Brown",
+        "account": {
+            "balance": {
+                "amount": 670.00,
+                "currency": "GBP"
+            }
+        }
+    },
+    {
+        "id": "ACC3016",
+        "name": "Emma Garcia",
+        "account": {
+            "balance": {
+                "amount": 121.45,
+                "currency": "USD"
+            }
+        }
+    },
+    {
+        "id": "ACC3017",
+        "name": "Frank Garcia",
+        "account": {
+            "balance": {
+                "amount": 389.80,
+                "currency": "EUR"
+            }
+        }
+    }
+]

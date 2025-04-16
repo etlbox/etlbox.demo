@@ -84,6 +84,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbExtensions", "DbExtension
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbExtensions.SimpleTest", "DbExtensions.SimpleTest\DbExtensions.SimpleTest.csproj", "{36A94182-464A-4692-A99A-E735C0E7F7BB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blog", "Blog", "{9E49688B-01E9-4420-90E4-324835EF70D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationDrivenETL", "ConfigurationDrivenETL\ConfigurationDrivenETL.csproj", "{EFFFD31F-1505-4CD6-B72B-B50B1F82C57D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -214,6 +218,10 @@ Global
 		{36A94182-464A-4692-A99A-E735C0E7F7BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36A94182-464A-4692-A99A-E735C0E7F7BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36A94182-464A-4692-A99A-E735C0E7F7BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFFFD31F-1505-4CD6-B72B-B50B1F82C57D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFFD31F-1505-4CD6-B72B-B50B1F82C57D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFFD31F-1505-4CD6-B72B-B50B1F82C57D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFFD31F-1505-4CD6-B72B-B50B1F82C57D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +258,7 @@ Global
 		{7B5FA609-5BF7-4CD9-9EB7-301BF9E60736} = {16D5D52F-2A1A-465A-BC79-535268E5EF94}
 		{A28955A8-5E28-4A48-990C-546A3B1CD01C} = {16D5D52F-2A1A-465A-BC79-535268E5EF94}
 		{36A94182-464A-4692-A99A-E735C0E7F7BB} = {D6608596-5179-412C-9DF4-8E22EE1754FF}
+		{EFFFD31F-1505-4CD6-B72B-B50B1F82C57D} = {9E49688B-01E9-4420-90E4-324835EF70D2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}

@@ -1,0 +1,20 @@
+{
+    "ColumnMappings": [
+        {
+            "source": "id",
+            "destination": "AccountNumber"
+        },
+        {
+            "source": "name",
+            "destination": "Name"
+        },
+        {
+            "source": "account.balance.amount",
+            "destination": "Balance"
+        },
+        {
+            "source": "account.balance.currency",
+            "destination": "Currency"
+        }
+    ]
+}
