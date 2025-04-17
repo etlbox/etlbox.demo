@@ -65,8 +65,10 @@ public class Customer : IMergeableRow {
     public int Id { get; set; }    
     public string Name { get; set; }
     public string City { get; set; }
+
+    [DbColumnDefinition(Ignore = true)]
     public DateTime ChangeDate { get; set; }
-    [DbColumnDefinition(DataType = "INT")]
+    [DbColumnDefinition(Ignore = true)]
     public ChangeAction? ChangeAction { get; set; }
 }
 
