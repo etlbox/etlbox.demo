@@ -11,9 +11,15 @@ using ETLBox.SqlServer;
 namespace MemoryTester;
 
 public static class Program {
-    private static string DatabaseName => "demo";
-    private static int BatchSize = 1000;
+    /* Configuration*/
+    public static string DatabaseName => "demo";
+    public static int BatchSize = 1000;
+    public static string ConnectionString = $"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog={DatabaseName};TrustServerCertificate=true;";
+
     private static long LastInsertedId = 0;
+    private static long _currentUpdateId = 0;
+    private static long _currentDeleteId = 0;
+    private static long _currentInsertId = 0;
     private static Random Random = new Random();
 
     public static async Task Main() {
@@ -137,14 +143,43 @@ public static class Program {
 
     private static async Task MergeDataAsync(int recordCount) {
         try {
+            // Read maximum ID from database first
+            long maxIdInDatabase = GetMaxIdFromTable("TargetTable");
+
             int updateCount = (int)(recordCount * 0.3);  // 30%
             int deleteCount = (int)(recordCount * 0.1);  // 10%
             int insertCount = recordCount - updateCount - deleteCount; // 60%
 
-            Console.WriteLine($"Starting Merge with {recordCount:N0} records:");
-            Console.WriteLine($"  - Updates: {updateCount:N0} (existing IDs)");
-            Console.WriteLine($"  - Deletes: {deleteCount:N0} (marked for deletion)");
-            Console.WriteLine($"  - Inserts: {insertCount:N0} (new records)");
+            // Adjust counts if database has fewer records than expected
+            long existingRecords = maxIdInDatabase;
+            if (existingRecords < updateCount + deleteCount) {
+                int adjustedUpdateCount = Math.Max(0, (int)(existingRecords * 0.75));
+                int adjustedDeleteCount = Math.Max(0, (int)(existingRecords * 0.25));
+                int adjustedInsertCount = recordCount - adjustedUpdateCount - adjustedDeleteCount;
+                
+                Console.WriteLine($"Database has only {existingRecords:N0} records. Adjusting distribution:");
+                Console.WriteLine($"  - Updates: {adjustedUpdateCount:N0}");
+                Console.WriteLine($"  - Deletes: {adjustedDeleteCount:N0}");
+                Console.WriteLine($"  - Inserts: {adjustedInsertCount:N0}");
+                
+                updateCount = adjustedUpdateCount;
+                deleteCount = adjustedDeleteCount;
+                insertCount = adjustedInsertCount;
+            }
+
+            // Initialize ID counters - start in the middle of the existing range if possible
+            long updateDeleteRangeSize = updateCount + deleteCount;
+            long availableRange = Math.Max(1, maxIdInDatabase - updateDeleteRangeSize);
+            long rangeStartOffset = availableRange / 2;  // Start roughly in the middle
+            
+            _currentUpdateId = Math.Max(1, rangeStartOffset);
+            _currentDeleteId = _currentUpdateId + updateCount;
+            _currentInsertId = maxIdInDatabase + 1;
+
+            Console.WriteLine($"Starting Merge with {recordCount:N0} records (DB has {existingRecords:N0} existing records):");
+            Console.WriteLine($"  - Updates: {updateCount:N0} (IDs {_currentUpdateId:N0} to {_currentUpdateId + updateCount - 1:N0})");
+            Console.WriteLine($"  - Deletes: {deleteCount:N0} (IDs {_currentDeleteId:N0} to {_currentDeleteId + deleteCount - 1:N0})");
+            Console.WriteLine($"  - Inserts: {insertCount:N0} (IDs {_currentInsertId:N0} onwards)");
 
             using var connection = GetSqlConnection();
 
@@ -156,7 +191,7 @@ public static class Program {
                 MergeMode = MergeMode.Delta,
                 CacheMode = CacheMode.Partial,
             };
-            dest.FindDuplicates = true;
+            dest.FindDuplicates = false;
 
             source.LinkTo(dest);
 
@@ -176,24 +211,24 @@ public static class Program {
             int deletePerBatch = (int)(BatchSize * 0.1);      // 100 per 1000
             int insertPerBatch = BatchSize - updatePerBatch - deletePerBatch;  // 600 per 1000
 
-            // Generate updates (existing IDs - random from already inserted)
+            // Generate updates (continuous IDs)
             for (int i = 0; i < updatePerBatch; i++) {
-                long randomId = (Random.NextInt64() % Math.Max(1, LastInsertedId)) + 1;
-                batch.Add(GenerateDbRow(randomId));
+                batch.Add(GenerateDbRow(_currentUpdateId));
+                _currentUpdateId++;
             }
 
-            // Generate deletes (existing IDs marked for deletion)
+            // Generate deletes (continuous IDs)
             for (int i = 0; i < deletePerBatch; i++) {
-                long randomId = (Random.NextInt64() % Math.Max(1, LastInsertedId)) + 1;
-                var row = GenerateDbRow(randomId);
+                var row = GenerateDbRow(_currentDeleteId);
                 row.DeleteFlag = true;
                 batch.Add(row);
+                _currentDeleteId++;
             }
 
-            // Generate inserts (new IDs)
+            // Generate inserts (continuous IDs)
             for (int i = 0; i < insertPerBatch; i++) {
-                LastInsertedId++;
-                batch.Add(GenerateDbRow(LastInsertedId));
+                batch.Add(GenerateDbRow(_currentInsertId));
+                _currentInsertId++;
             }
 
             return batch;
@@ -281,6 +316,19 @@ public static class Program {
         }
     }
 
+    private static long GetMaxIdFromTable(string tableName) {
+        try {
+            using var connection = GetSqlConnection();
+            var task = new SqlTask() {
+                ConnectionManager = connection,
+                Sql = $"SELECT ISNULL(MAX(Id), 0) FROM {tableName}"
+            };
+            return task.ExecuteScalar<long>();
+        } catch {
+            return 0;
+        }
+    }
+
     private static SqlConnectionManager GetSqlConnection() =>
-        new($"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog={DatabaseName};TrustServerCertificate=true;");
+        new(ConnectionString);
 }
