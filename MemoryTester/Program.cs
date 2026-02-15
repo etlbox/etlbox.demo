@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -14,26 +14,47 @@ public static class Program {
     /* Configuration*/
     public static string DatabaseName => "demo";
     public static int BatchSize = 1000;
+    public static int MaxBufferSize = 20_000;
     public static string ConnectionString = $"Data Source=localhost;User Id=sa;Password=YourStrong@Passw0rd;Initial Catalog={DatabaseName};TrustServerCertificate=true;";
 
+    #region Private Variables
     private static long LastInsertedId = 0;
+    private static long _recordsGenerated = 0;
     private static long _currentUpdateId = 0;
     private static long _currentDeleteId = 0;
     private static long _currentInsertId = 0;
+    private static long _updatesRemaining = 0;
+    private static long _deletesRemaining = 0;
+    private static long _insertsRemaining = 0;
+    private static long _minMemoryConsumption = long.MaxValue;
+    private static long _maxMemoryConsumption = 0;
+    private static long _totalMemoryConsumption = 0;
+    private static long _memoryMeasurementCount = 0;
+    private static DateTimeOffset _operationStartTime = DateTimeOffset.MinValue;
     private static Random Random = new Random();
+    #endregion
 
-    public static async Task Main() {
+    public static async Task Main(string[] args) {
         string input;
         ETLBox.Licensing.LicenseService.CurrentKey =
                 @"2026-03-28|TRIAL|ONLY FOR PERSONAL OR TESTING PURPOSES|CUSTOMER:Support|MAIL:support@etlbox.net||cTl4SRAqvqBggIPO9G44fH+wfDUV4wYg5oV7NTbFo6zxIkBKAwrEFEMSzudJYGtblbrETxCRkxNidtM6jprLNra9XPiYtYzFf+lh7iXua9JY0857DVrCwDHAayNONrzpXvSmF5WK5BOa8klV5+bqeks1kT9zCshnhCEB8JNZHmU=";
 
+        ETLBox.Settings.MaxBufferSize = MaxBufferSize;
+
         do {
             Console.WriteLine("\n--- MemoryTester Menu ---");
-            Console.WriteLine("create | load100k | load10m | load100m | merge100k | merge10m | merge100m | gc | exit");
+            Console.WriteLine("create | load100k | load1m | load10m | load100m | merge100k | merge1m | merge10m | merge100m | gc | exit");
+            Console.WriteLine($"Current Settings: BatchSize={BatchSize:N0}, MaxBufferSize={MaxBufferSize:N0}");
+            Console.WriteLine("Settings: batchsize=<value> | maxbuffersize=<value>");
             Console.Write("> ");
             input = Console.ReadLine()?.Trim().ToLower() ?? "";
 
             Console.WriteLine();
+
+            if (input.Contains("=")) {
+                HandleSettingChange(input);
+                continue;
+            }
 
             switch (input) {
                 case "create":
@@ -41,6 +62,9 @@ public static class Program {
                     break;
                 case "load100k":
                     await LoadDataAsync(100_000);
+                    break;
+                case "load1m":
+                    await LoadDataAsync(1_000_000);
                     break;
                 case "load10m":
                     await LoadDataAsync(10_000_000);
@@ -50,6 +74,9 @@ public static class Program {
                     break;
                 case "merge100k":
                     await MergeDataAsync(100_000);
+                    break;
+                case "merge1m":
+                    await MergeDataAsync(1_000_000);
                     break;
                 case "merge10m":
                     await MergeDataAsync(10_000_000);
@@ -72,6 +99,36 @@ public static class Program {
                     break;
             }
         } while (input != "exit");
+    }
+
+    private static void HandleSettingChange(string input) {
+        var parts = input.Split('=');
+        if (parts.Length != 2) {
+            Console.WriteLine("✗ Invalid format. Use: key=value");
+            return;
+        }
+
+        string key = parts[0].Trim();
+        string value = parts[1].Trim();
+
+        if (key.Equals("batchsize", StringComparison.OrdinalIgnoreCase)) {
+            if (int.TryParse(value, out int batchSize) && batchSize > 0) {
+                BatchSize = batchSize;
+                Console.WriteLine($"✓ BatchSize set to {BatchSize:N0}");
+            } else {
+                Console.WriteLine($"✗ Invalid BatchSize value: {value}");
+            }
+        } else if (key.Equals("maxbuffersize", StringComparison.OrdinalIgnoreCase)) {
+            if (int.TryParse(value, out int maxBufferSize) && maxBufferSize > 0) {
+                MaxBufferSize = maxBufferSize;
+                ETLBox.Settings.MaxBufferSize = MaxBufferSize;
+                Console.WriteLine($"✓ MaxBufferSize set to {MaxBufferSize:N0}");
+            } else {
+                Console.WriteLine($"✗ Invalid MaxBufferSize value: {value}");
+            }
+        } else {
+            Console.WriteLine($"✗ Unknown setting: {key}");
+        }
     }
 
     private static void CreateTargetTable() {
@@ -97,9 +154,9 @@ public static class Program {
                     new TableColumn("StringValue2", "VARCHAR(100)", allowNulls: true),
                     new TableColumn("StringValue3", "VARCHAR(100)", allowNulls: true),
                     new TableColumn("StringValue4", "VARCHAR(100)", allowNulls: true),
-                    new TableColumn("StringValue5", "VARCHAR(100)", allowNulls: true),
-                    new TableColumn("DeleteFlag", "BIT", allowNulls: false),
-                     new TableColumn("ChangeAction", "BIT", allowNulls: false),
+                    new TableColumn("StringValue5", "VARCHAR(100)", allowNulls: true),                    
+                    new TableColumn("ChangeAction", "INT", allowNulls: true),
+                    new TableColumn("ChangeDate", "DATETIME", allowNulls: true),
                 });
 
             CreateTableTask.Create(connection, tableDefinition);
@@ -112,20 +169,26 @@ public static class Program {
 
     private static async Task LoadDataAsync(int recordCount) {
         try {
-            Console.WriteLine($"Loading {recordCount:N0} records...");
+            ResetMemoryTracking();
+            _recordsGenerated = 0;
+
+            LastInsertedId = GetMaxIdFromTable("TargetTable");
+
+            Console.WriteLine($"Loading {recordCount:N0} records starting from ID {LastInsertedId + 1:N0}...");
             using var connection = GetSqlConnection();
 
             var source = new CustomBatchSource<DbRow>();
             source.ReadBatchFunc = ProduceLoadBatch;
-            source.ReadingCompleted = (progressCount) => progressCount >= recordCount;
+            source.ReadingCompleted = (progressCount) => _recordsGenerated >= recordCount;
 
             var dest = new DbDestination<DbRow>(connection, "TargetTable");
+            dest.BatchSize = BatchSize;
 
             source.LinkTo(dest);
 
             await ExecuteWithLiveDiagnostics(new Network(source), $"Loading {recordCount:N0} records");
 
-            Console.WriteLine($"✓ Load completed. Total records inserted: {recordCount:N0}");
+            Console.WriteLine($"✓ Load completed. Total records inserted: {_recordsGenerated:N0}");
             PrintDiagnostics();
         } catch (Exception ex) {
             Console.WriteLine($"✗ Error during load: {ex.Message}");
@@ -133,16 +196,24 @@ public static class Program {
 
         IEnumerable<DbRow> ProduceLoadBatch(int progressCount) {
             var batch = new List<DbRow>();
-            for (long i = LastInsertedId; i < LastInsertedId + BatchSize; i++) {
-                batch.Add(GenerateDbRow(i));
+
+            // Berechne wie viele Records in dieser Batch generiert werden sollen
+            long recordsToGenerate = Math.Min(BatchSize, recordCount - _recordsGenerated);
+
+            for (long i = 0; i < recordsToGenerate; i++) {
+                LastInsertedId++;
+                batch.Add(GenerateDbRow(LastInsertedId));
             }
-            LastInsertedId += BatchSize;
+
+            _recordsGenerated += batch.Count;
             return batch;
         }
     }
 
     private static async Task MergeDataAsync(int recordCount) {
         try {
+            ResetMemoryTracking();
+
             // Read maximum ID from database first
             long maxIdInDatabase = GetMaxIdFromTable("TargetTable");
 
@@ -156,12 +227,12 @@ public static class Program {
                 int adjustedUpdateCount = Math.Max(0, (int)(existingRecords * 0.75));
                 int adjustedDeleteCount = Math.Max(0, (int)(existingRecords * 0.25));
                 int adjustedInsertCount = recordCount - adjustedUpdateCount - adjustedDeleteCount;
-                
+
                 Console.WriteLine($"Database has only {existingRecords:N0} records. Adjusting distribution:");
                 Console.WriteLine($"  - Updates: {adjustedUpdateCount:N0}");
                 Console.WriteLine($"  - Deletes: {adjustedDeleteCount:N0}");
                 Console.WriteLine($"  - Inserts: {adjustedInsertCount:N0}");
-                
+
                 updateCount = adjustedUpdateCount;
                 deleteCount = adjustedDeleteCount;
                 insertCount = adjustedInsertCount;
@@ -171,7 +242,7 @@ public static class Program {
             long updateDeleteRangeSize = updateCount + deleteCount;
             long availableRange = Math.Max(1, maxIdInDatabase - updateDeleteRangeSize);
             long rangeStartOffset = availableRange / 2;  // Start roughly in the middle
-            
+
             _currentUpdateId = Math.Max(1, rangeStartOffset);
             _currentDeleteId = _currentUpdateId + updateCount;
             _currentInsertId = maxIdInDatabase + 1;
@@ -180,6 +251,11 @@ public static class Program {
             Console.WriteLine($"  - Updates: {updateCount:N0} (IDs {_currentUpdateId:N0} to {_currentUpdateId + updateCount - 1:N0})");
             Console.WriteLine($"  - Deletes: {deleteCount:N0} (IDs {_currentDeleteId:N0} to {_currentDeleteId + deleteCount - 1:N0})");
             Console.WriteLine($"  - Inserts: {insertCount:N0} (IDs {_currentInsertId:N0} onwards)");
+
+            // Setze remaining Counts
+            _updatesRemaining = updateCount;
+            _deletesRemaining = deleteCount;
+            _insertsRemaining = insertCount;
 
             using var connection = GetSqlConnection();
 
@@ -192,6 +268,7 @@ public static class Program {
                 CacheMode = CacheMode.Partial,
             };
             dest.FindDuplicates = false;
+            dest.BatchSize = BatchSize;
 
             source.LinkTo(dest);
 
@@ -205,30 +282,28 @@ public static class Program {
 
         IEnumerable<DbRow> ProduceMergeBatch(int progressCount) {
             var batch = new List<DbRow>();
-            
-            // Calculate distribution per batch
-            int updatePerBatch = (int)(BatchSize * 0.3);      // 300 per 1000
-            int deletePerBatch = (int)(BatchSize * 0.1);      // 100 per 1000
-            int insertPerBatch = BatchSize - updatePerBatch - deletePerBatch;  // 600 per 1000
 
             // Generate updates (continuous IDs)
-            for (int i = 0; i < updatePerBatch; i++) {
+            while (batch.Count < BatchSize && _updatesRemaining > 0) {
                 batch.Add(GenerateDbRow(_currentUpdateId));
                 _currentUpdateId++;
+                _updatesRemaining--;
             }
 
             // Generate deletes (continuous IDs)
-            for (int i = 0; i < deletePerBatch; i++) {
+            while (batch.Count < BatchSize && _deletesRemaining > 0) {
                 var row = GenerateDbRow(_currentDeleteId);
                 row.DeleteFlag = true;
                 batch.Add(row);
                 _currentDeleteId++;
+                _deletesRemaining--;
             }
 
             // Generate inserts (continuous IDs)
-            for (int i = 0; i < insertPerBatch; i++) {
+            while (batch.Count < BatchSize && _insertsRemaining > 0) {
                 batch.Add(GenerateDbRow(_currentInsertId));
                 _currentInsertId++;
+                _insertsRemaining--;
             }
 
             return batch;
@@ -275,7 +350,6 @@ public static class Program {
         });
 
         try {
-            // Execute network
             await network.ExecuteAsync(cts.Token);
         } finally {
             cts.Cancel();
@@ -288,18 +362,42 @@ public static class Program {
         long memory = GC.GetTotalMemory(false) / 1024 / 1024;
         int targetRowCount = GetRowCount("TargetTable");
 
-        // Use carriage return to overwrite the same line
-        Console.Write($"\r{operationName} | Memory: {memory:N0} MB | Rows in DB: {targetRowCount:N0}        ");
+        // Track min/max/total memory
+        if (memory < _minMemoryConsumption)
+            _minMemoryConsumption = memory;
+        if (memory > _maxMemoryConsumption)
+            _maxMemoryConsumption = memory;
+        _totalMemoryConsumption += memory;
+        _memoryMeasurementCount++;
+
+        // Calculate average memory and elapsed time
+        long avgMemory = _memoryMeasurementCount > 0 ? _totalMemoryConsumption / _memoryMeasurementCount : 0;
+        TimeSpan elapsed = DateTimeOffset.Now - _operationStartTime;
+        string elapsedStr = elapsed.TotalSeconds < 60
+            ? $"{elapsed.TotalSeconds:F0}s"
+            : $"{elapsed.TotalMinutes:F0}m";
+
+        // Einfache Carriage Return Lösung auf zwei Zeilen
+        Console.Write($"\r Mem: {memory}MB | Avg: {avgMemory}MB | Rows: {targetRowCount:N0} | Time: {elapsedStr}   ");
+
     }
 
     private static void PrintDiagnostics() {
         long memory = GC.GetTotalMemory(false) / 1024 / 1024;
         int targetRowCount = GetRowCount("TargetTable");
+        long avgMemory = _memoryMeasurementCount > 0 ? _totalMemoryConsumption / _memoryMeasurementCount : 0;
+        TimeSpan elapsed = DateTimeOffset.Now - _operationStartTime;
 
         Console.WriteLine();
         Console.WriteLine("=== Diagnostics ===");
         Console.WriteLine($"TargetTable Row Count: {targetRowCount:N0}");
-        Console.WriteLine($"Managed Heap Memory: {memory:N0} MB");
+        Console.WriteLine($"Current Memory: {memory:N0} MB");
+        Console.WriteLine($"Min Memory: {_minMemoryConsumption:N0} MB");
+        Console.WriteLine($"Avg Memory: {avgMemory:N0} MB");
+        Console.WriteLine($"Max Memory: {_maxMemoryConsumption:N0} MB");
+        if (_operationStartTime != DateTimeOffset.MinValue) {
+            Console.WriteLine($"Elapsed Time: {elapsed.TotalSeconds:F2}s");
+        }
         Console.WriteLine("===================");
     }
 
@@ -327,6 +425,14 @@ public static class Program {
         } catch {
             return 0;
         }
+    }
+
+    private static void ResetMemoryTracking() {
+        _minMemoryConsumption = long.MaxValue;
+        _maxMemoryConsumption = 0;
+        _totalMemoryConsumption = 0;
+        _memoryMeasurementCount = 0;
+        _operationStartTime = DateTimeOffset.Now;
     }
 
     private static SqlConnectionManager GetSqlConnection() =>

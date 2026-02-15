@@ -3,7 +3,7 @@ using ETLBox.DataFlow;
 
 namespace MemoryTester
 {
-    public class DbRow : MergeableRow
+    public class DbRow : IMergeableRow
     {
         [IdColumn]
         public long Id { get; set; }
@@ -70,5 +70,10 @@ namespace MemoryTester
 
         [DeleteColumn(DeleteOnMatchValue =true)]
         public bool DeleteFlag { get; set; }
+
+        [UpdateColumn]
+        public DateTime ChangeDate { get; set; } = DateTime.Now;
+        [UpdateColumn]
+        public ChangeAction? ChangeAction { get; set; }
     }
 }
