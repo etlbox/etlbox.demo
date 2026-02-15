@@ -214,14 +214,12 @@ public static class Program {
         try {
             ResetMemoryTracking();
 
-            // Read maximum ID from database first
             long maxIdInDatabase = GetMaxIdFromTable("TargetTable");
 
             int updateCount = (int)(recordCount * 0.3);  // 30%
             int deleteCount = (int)(recordCount * 0.1);  // 10%
             int insertCount = recordCount - updateCount - deleteCount; // 60%
 
-            // Adjust counts if database has fewer records than expected
             long existingRecords = maxIdInDatabase;
             if (existingRecords < updateCount + deleteCount) {
                 int adjustedUpdateCount = Math.Max(0, (int)(existingRecords * 0.75));
@@ -237,19 +235,14 @@ public static class Program {
                 deleteCount = adjustedDeleteCount;
                 insertCount = adjustedInsertCount;
             }
-
-            // Initialize ID counters - start in the middle of the existing range if possible
-            long updateDeleteRangeSize = updateCount + deleteCount;
-            long availableRange = Math.Max(1, maxIdInDatabase - updateDeleteRangeSize);
-            long rangeStartOffset = availableRange / 2;  // Start roughly in the middle
-
-            _currentUpdateId = Math.Max(1, rangeStartOffset);
+                        
+            _currentUpdateId = Math.Max(1, maxIdInDatabase - (updateCount + deleteCount));
             _currentDeleteId = _currentUpdateId + updateCount;
             _currentInsertId = maxIdInDatabase + 1;
 
-            Console.WriteLine($"Starting Merge with {recordCount:N0} records (DB has {existingRecords:N0} existing records):");
-            Console.WriteLine($"  - Updates: {updateCount:N0} (IDs {_currentUpdateId:N0} to {_currentUpdateId + updateCount - 1:N0})");
-            Console.WriteLine($"  - Deletes: {deleteCount:N0} (IDs {_currentDeleteId:N0} to {_currentDeleteId + deleteCount - 1:N0})");
+            Console.WriteLine($"Starting Merge with {recordCount:N0} records:");
+            Console.WriteLine($"  - Updates: {updateCount:N0} (IDs {_currentUpdateId:N0} to {_currentDeleteId - 1:N0})");
+            Console.WriteLine($"  - Deletes: {deleteCount:N0} (IDs {_currentDeleteId:N0} to {_currentInsertId - 1:N0})");
             Console.WriteLine($"  - Inserts: {insertCount:N0} (IDs {_currentInsertId:N0} onwards)");
 
             // Setze remaining Counts
@@ -282,16 +275,26 @@ public static class Program {
 
         IEnumerable<DbRow> ProduceMergeBatch(int progressCount) {
             var batch = new List<DbRow>();
+            long totalRemaining = _updatesRemaining + _deletesRemaining + _insertsRemaining;
 
-            // Generate updates (continuous IDs)
-            while (batch.Count < BatchSize && _updatesRemaining > 0) {
+            if (totalRemaining == 0) {
+                return batch;
+            }
+
+            // Calculate proportionally, rest goes to inserts
+            long updateInBatch = (long)(BatchSize * ((double)_updatesRemaining / totalRemaining));
+            long deleteInBatch = (long)(BatchSize * ((double)_deletesRemaining / totalRemaining));
+            long insertInBatch = BatchSize - updateInBatch - deleteInBatch;
+
+            // Generate updates
+            for (long i = 0; i < updateInBatch && _updatesRemaining > 0; i++) {
                 batch.Add(GenerateDbRow(_currentUpdateId));
                 _currentUpdateId++;
                 _updatesRemaining--;
             }
 
-            // Generate deletes (continuous IDs)
-            while (batch.Count < BatchSize && _deletesRemaining > 0) {
+            // Generate deletes
+            for (long i = 0; i < deleteInBatch && _deletesRemaining > 0; i++) {
                 var row = GenerateDbRow(_currentDeleteId);
                 row.DeleteFlag = true;
                 batch.Add(row);
@@ -299,8 +302,8 @@ public static class Program {
                 _deletesRemaining--;
             }
 
-            // Generate inserts (continuous IDs)
-            while (batch.Count < BatchSize && _insertsRemaining > 0) {
+            // Generate inserts (gets remainder)
+            for (long i = 0; i < insertInBatch && _insertsRemaining > 0; i++) {
                 batch.Add(GenerateDbRow(_currentInsertId));
                 _currentInsertId++;
                 _insertsRemaining--;
@@ -385,12 +388,14 @@ public static class Program {
     private static void PrintDiagnostics() {
         long memory = GC.GetTotalMemory(false) / 1024 / 1024;
         int targetRowCount = GetRowCount("TargetTable");
+        long maxId = GetMaxIdFromTable("TargetTable");
         long avgMemory = _memoryMeasurementCount > 0 ? _totalMemoryConsumption / _memoryMeasurementCount : 0;
         TimeSpan elapsed = DateTimeOffset.Now - _operationStartTime;
 
         Console.WriteLine();
         Console.WriteLine("=== Diagnostics ===");
         Console.WriteLine($"TargetTable Row Count: {targetRowCount:N0}");
+        Console.WriteLine($"Max ID in Database: {maxId:N0}");
         Console.WriteLine($"Current Memory: {memory:N0} MB");
         Console.WriteLine($"Min Memory: {_minMemoryConsumption:N0} MB");
         Console.WriteLine($"Avg Memory: {avgMemory:N0} MB");
