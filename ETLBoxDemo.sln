@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.2.11415.280 d18.0
+VisualStudioVersion = 18.2.11415.280
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatingOrders", "RatingOrders\RatingOrders.csproj", "{58E67120-034D-4820-96C1-F7A7E6266549}"
 EndProject
@@ -97,6 +97,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbExtensions.BulkMerge", "DbExtensions.BulkMerge\DbExtensions.BulkMerge.csproj", "{CC51DE55-B9E9-4672-920C-AFD139C92F52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbExtensions.BulkOperationsExample", "DbExtensions.BulkOperationsExample\DbExtensions.BulkOperationsExample.csproj", "{F6D197E9-0BD4-4925-96CF-123E8B52FF6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryTester", "MemoryTester\MemoryTester.csproj", "{B2B3BDE8-BEEC-4F18-9B99-F7A00D92108A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -252,6 +254,10 @@ Global
 		{F6D197E9-0BD4-4925-96CF-123E8B52FF6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6D197E9-0BD4-4925-96CF-123E8B52FF6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6D197E9-0BD4-4925-96CF-123E8B52FF6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2B3BDE8-BEEC-4F18-9B99-F7A00D92108A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2B3BDE8-BEEC-4F18-9B99-F7A00D92108A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2B3BDE8-BEEC-4F18-9B99-F7A00D92108A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2B3BDE8-BEEC-4F18-9B99-F7A00D92108A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -294,6 +300,7 @@ Global
 		{52B9D769-15B9-45E7-923E-310366CADF7D} = {D6608596-5179-412C-9DF4-8E22EE1754FF}
 		{CC51DE55-B9E9-4672-920C-AFD139C92F52} = {D6608596-5179-412C-9DF4-8E22EE1754FF}
 		{F6D197E9-0BD4-4925-96CF-123E8B52FF6E} = {D6608596-5179-412C-9DF4-8E22EE1754FF}
+		{B2B3BDE8-BEEC-4F18-9B99-F7A00D92108A} = {BE9DD422-2D09-4B20-B38C-57DDCF16BC60}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5856FD5E-119B-42A2-96C0-B4923D1F0945}

@@ -14,7 +14,7 @@ namespace MergePerformanceIssue {
         static void Main(string[] args) {
 
             ETLBoxOffice.LicenseManager.LicenseCheck.LicenseKey =
-                @"2024-01-15|TRIAL|||Support|support@etlbox.net||Lhwz7nAQavV8oa/HHWvX2ukUehx0hIa5IkxoBGMjdPJ9p4tlnDt3iL0XHbj53gRDVqK5vST7Gi9WwM06kPZDLvYyrK8ymvdTFFX/KWkUhjpXZX8CUQ6C86BZzlwm6APLPjlFyXZjoo9OujRMtnyLI4YotO3s2ziPvkrKELhtDMk=";
+                @"2026-03-28|TRIAL|ONLY FOR PERSONAL OR TESTING PURPOSES|CUSTOMER:Support|MAIL:support@etlbox.net||cTl4SRAqvqBggIPO9G44fH+wfDUV4wYg5oV7NTbFo6zxIkBKAwrEFEMSzudJYGtblbrETxCRkxNidtM6jprLNra9XPiYtYzFf+lh7iXua9JY0857DVrCwDHAayNONrzpXvSmF5WK5BOa8klV5+bqeks1kT9zCshnhCEB8JNZHmU=";
 
             InitializeLoggingWithNlog();
             Settings.DisableAllLogging = true;
