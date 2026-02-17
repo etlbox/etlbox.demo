@@ -260,6 +260,7 @@ public static class Program {
                 MergeMode = MergeMode.Delta,
                 CacheMode = CacheMode.Partial,
             };
+            dest.EvictionPolicy = CacheEvictionPolicy.FullRefresh;
             dest.FindDuplicates = false;
             dest.BatchSize = BatchSize;
 
