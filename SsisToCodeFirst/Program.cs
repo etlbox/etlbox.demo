@@ -77,6 +77,7 @@ Console.WriteLine(File.ReadAllText("errors.csv"));
 Console.WriteLine("Press ENTER to exit.");
 
 Console.ReadLine();
+
 static void PrepareDatabase(SqlConnectionManager connectionManager)
 {
     CreateTableTask.CreateIfNotExists(connectionManager, "Customers",

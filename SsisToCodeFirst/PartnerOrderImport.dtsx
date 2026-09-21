@@ -1,0 +1,694 @@
+<?xml version="1.0"?>
+<!--
+  Visual SSIS package for blog screenshots (Leaving SSIS Without Losing Speed).
+  Open in Visual Studio with SSDT: New Integration Services Project → Add Existing Package.
+
+  SSIS object names cannot contain '.' — connection managers and Data Flow boxes
+  use "Orders CSV" / "Errors CSV" / "Orders" / "Error rows", while the files stay orders.csv / errors.csv.
+-->
+<DTS:Executable
+  xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/21/2026 1:49:00 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ETLBOX"
+  DTS:CreatorName="Andreas Lennartz"
+  DTS:DTSID="{B7E4C1A2-9D3F-4B8E-A1C6-2F0D8E5B7A91}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.2"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="PartnerOrderImport"
+  DTS:PackageType="5"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{0A1B2C3D-4E5F-4678-9A0B-1C2D3E4F5A6B}">
+  <DTS:Property DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.demo]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{C1D2E3F4-A5B6-4789-8C9D-0E1F2A3B4C5D}"
+      DTS:ObjectName="localhost.demo">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=demo;Provider=SQLNCLI11.1;User ID=sa;Password=YourStrong@Passw0rd;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Orders CSV]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{D2E3F4A5-B6C7-4890-9D0E-1F2A3B4C5D6E}"
+      DTS:ObjectName="Orders CSV">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\Users\AndreasLennartz\github\etlbox\etlbox.demo\SsisToCodeFirst\orders.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:DataType="3" DTS:TextQualified="True" DTS:ObjectName="OrderId" DTS:DTSID="{A0000001-0000-4000-8000-000000000001}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:DataType="7" DTS:TextQualified="True" DTS:ObjectName="OrderDate" DTS:DTSID="{A0000002-0000-4000-8000-000000000002}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:MaximumWidth="20" DTS:DataType="129" DTS:TextQualified="True" DTS:ObjectName="CustomerCode" DTS:DTSID="{A0000003-0000-4000-8000-000000000003}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:MaximumWidth="50" DTS:DataType="129" DTS:TextQualified="True" DTS:ObjectName="ProductSku" DTS:DTSID="{A0000004-0000-4000-8000-000000000004}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x000D__x000A_" DTS:DataType="3" DTS:TextQualified="True" DTS:ObjectName="Quantity" DTS:DTSID="{A0000005-0000-4000-8000-000000000005}" DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Errors CSV]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{E3F4A5B6-C7D8-4901-AE1F-2A3B4C5D6E7F}"
+      DTS:ObjectName="Errors CSV">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\Users\AndreasLennartz\github\etlbox\etlbox.demo\SsisToCodeFirst\errors.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:DataType="3" DTS:TextQualified="True" DTS:ObjectName="OrderId" DTS:DTSID="{B0000001-0000-4000-8000-000000000001}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:DataType="7" DTS:TextQualified="True" DTS:ObjectName="OrderDate" DTS:DTSID="{B0000002-0000-4000-8000-000000000002}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:MaximumWidth="20" DTS:DataType="129" DTS:TextQualified="True" DTS:ObjectName="CustomerCode" DTS:DTSID="{B0000003-0000-4000-8000-000000000003}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x002C_" DTS:MaximumWidth="50" DTS:DataType="129" DTS:TextQualified="True" DTS:ObjectName="ProductSku" DTS:DTSID="{B0000004-0000-4000-8000-000000000004}" DTS:CreationName="" />
+            <DTS:FlatFileColumn DTS:ColumnType="Delimited" DTS:ColumnDelimiter="_x000D__x000A_" DTS:DataType="3" DTS:TextQualified="True" DTS:ObjectName="Quantity" DTS:DTSID="{B0000005-0000-4000-8000-000000000005}" DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create tables if missing"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{11111111-1111-4111-8111-111111111111}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create tables if missing"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"
+          SQLTask:Connection="{C1D2E3F4-A5B6-4789-8C9D-0E1F2A3B4C5D}"
+          SQLTask:SqlStatementSource="IF OBJECT_ID('dbo.StagingOrders','U') IS NULL CREATE TABLE dbo.StagingOrders (OrderId INT NOT NULL PRIMARY KEY, OrderDate DATE NOT NULL, CustomerId INT NOT NULL, CustomerName VARCHAR(100) NULL, ProductSku VARCHAR(50) NOT NULL, Quantity INT NOT NULL, UnitPrice DECIMAL(10,2) NOT NULL);&#xA;IF OBJECT_ID('dbo.Orders','U') IS NULL CREATE TABLE dbo.Orders (OrderId INT NOT NULL PRIMARY KEY, OrderDate DATE NOT NULL, CustomerId INT NOT NULL, CustomerName VARCHAR(100) NULL, ProductSku VARCHAR(50) NOT NULL, Quantity INT NOT NULL, UnitPrice DECIMAL(10,2) NOT NULL);" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate staging"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{22222222-2222-4222-8222-222222222222}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate staging"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"
+          SQLTask:Connection="{C1D2E3F4-A5B6-4789-8C9D-0E1F2A3B4C5D}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE dbo.StagingOrders;" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load orders"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{33333333-3333-4333-8333-333333333333}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load orders"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline version="1">
+          <components>
+            <component
+              refId="Package\Load orders\Orders"
+              componentClassID="{D23FD76B-F51D-420F-BBCB-19CBF6AC1AB4}"
+              contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Source"
+              localeId="1033"
+              name="Orders"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property dataType="System.Boolean" description="Specifies whether zero-length columns are treated as null." name="RetainNulls">false</property>
+                <property dataType="System.String" description="Specifies the name of an output column containing the file name." name="FileNameColumnName"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load orders\Orders.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Orders CSV]"
+                  connectionManagerRefId="Package.ConnectionManagers[Orders CSV]"
+                  name="FlatFileConnection" />
+              </connections>
+              <outputs>
+                <output refId="Package\Load orders\Orders.Outputs[Flat File Source Output]" name="Flat File Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderId]"
+                      lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderId]"
+                      name="OrderId"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      truncationRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[OrderId]">
+                      <properties>
+                        <property dataType="System.Boolean" name="FastParse">false</property>
+                        <property dataType="System.Boolean" name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderDate]"
+                      lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderDate]"
+                      name="OrderDate"
+                      dataType="date"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      truncationRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[OrderDate]">
+                      <properties>
+                        <property dataType="System.Boolean" name="FastParse">false</property>
+                        <property dataType="System.Boolean" name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[CustomerCode]"
+                      lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[CustomerCode]"
+                      name="CustomerCode"
+                      dataType="str"
+                      length="20"
+                      codePage="1252"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      truncationRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[CustomerCode]">
+                      <properties>
+                        <property dataType="System.Boolean" name="FastParse">false</property>
+                        <property dataType="System.Boolean" name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[ProductSku]"
+                      lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[ProductSku]"
+                      name="ProductSku"
+                      dataType="str"
+                      length="50"
+                      codePage="1252"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      truncationRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[ProductSku]">
+                      <properties>
+                        <property dataType="System.Boolean" name="FastParse">false</property>
+                        <property dataType="System.Boolean" name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[Quantity]"
+                      lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[Quantity]"
+                      name="Quantity"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      truncationRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[Quantity]">
+                      <properties>
+                        <property dataType="System.Boolean" name="FastParse">false</property>
+                        <property dataType="System.Boolean" name="UseBinaryFormat">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[OrderId]" name="OrderId" dataType="i4" />
+                    <externalMetadataColumn refId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[OrderDate]" name="OrderDate" dataType="date" />
+                    <externalMetadataColumn refId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[CustomerCode]" name="CustomerCode" dataType="str" length="20" codePage="1252" />
+                    <externalMetadataColumn refId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[ProductSku]" name="ProductSku" dataType="str" length="50" codePage="1252" />
+                    <externalMetadataColumn refId="Package\Load orders\Orders.Outputs[Flat File Source Output].ExternalColumns[Quantity]" name="Quantity" dataType="i4" />
+                  </externalMetadataColumns>
+                </output>
+                <output refId="Package\Load orders\Orders.Outputs[Flat File Source Error Output]" isErrorOut="true" name="Flat File Source Error Output">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Orders.Outputs[Flat File Source Error Output].Columns[ErrorCode]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Error Output].Columns[ErrorCode]" name="ErrorCode" dataType="i4" specialFlags="1" />
+                    <outputColumn refId="Package\Load orders\Orders.Outputs[Flat File Source Error Output].Columns[ErrorColumn]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Error Output].Columns[ErrorColumn]" name="ErrorColumn" dataType="i4" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load orders\Normalize keys"
+              componentClassID="{49928E82-9C4E-49F0-AABE-3812B82707EC}"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Derived Column"
+              name="Normalize keys"
+              usesDispositions="true"
+              version="0">
+              <inputs>
+                <input refId="Package\Load orders\Normalize keys.Inputs[Derived Column Input]" name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn refId="Package\Load orders\Normalize keys.Inputs[Derived Column Input].Columns[CustomerCode]" cachedDataType="str" cachedLength="20" cachedName="CustomerCode" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[CustomerCode]" />
+                    <inputColumn refId="Package\Load orders\Normalize keys.Inputs[Derived Column Input].Columns[ProductSku]" cachedDataType="str" cachedLength="50" cachedName="ProductSku" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[ProductSku]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\Load orders\Normalize keys.Outputs[Derived Column Output]" exclusionGroup="1" name="Derived Column Output" synchronousInputId="Package\Load orders\Normalize keys.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Normalize keys.Outputs[Derived Column Output].Columns[CustomerCodeNorm]" lineageId="Package\Load orders\Normalize keys.Outputs[Derived Column Output].Columns[CustomerCodeNorm]" name="CustomerCodeNorm" dataType="str" length="20" codePage="1252" errorOrTruncationOperation="Computation" errorRowDisposition="FailComponent" truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property dataType="System.String" name="Expression">UPPER(TRIM(CustomerCode))</property>
+                        <property dataType="System.String" name="FriendlyExpression">UPPER(TRIM(CustomerCode))</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn refId="Package\Load orders\Normalize keys.Outputs[Derived Column Output].Columns[ProductSkuNorm]" lineageId="Package\Load orders\Normalize keys.Outputs[Derived Column Output].Columns[ProductSkuNorm]" name="ProductSkuNorm" dataType="str" length="50" codePage="1252" errorOrTruncationOperation="Computation" errorRowDisposition="FailComponent" truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property dataType="System.String" name="Expression">UPPER(TRIM(ProductSku))</property>
+                        <property dataType="System.String" name="FriendlyExpression">UPPER(TRIM(ProductSku))</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output refId="Package\Load orders\Normalize keys.Outputs[Derived Column Error Output]" exclusionGroup="1" isErrorOut="true" name="Derived Column Error Output" synchronousInputId="Package\Load orders\Normalize keys.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Normalize keys.Outputs[Derived Column Error Output].Columns[ErrorCode]" lineageId="Package\Load orders\Normalize keys.Outputs[Derived Column Error Output].Columns[ErrorCode]" name="ErrorCode" dataType="i4" specialFlags="1" />
+                    <outputColumn refId="Package\Load orders\Normalize keys.Outputs[Derived Column Error Output].Columns[ErrorColumn]" lineageId="Package\Load orders\Normalize keys.Outputs[Derived Column Error Output].Columns[ErrorColumn]" name="ErrorColumn" dataType="i4" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load orders\Lookup Customer by Code"
+              componentClassID="{671046B0-AA63-4C9F-90E4-C06E0B710CE3}"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Lookup"
+              name="Lookup Customer by Code"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property dataType="System.String" name="SqlCommand">SELECT Id, Code, Name FROM dbo.Customers</property>
+                <property dataType="System.String" name="SqlCommandParam">select * from (SELECT Id, Code, Name FROM dbo.Customers) [refTable] where [refTable].[Code] = ?</property>
+                <property dataType="System.Int32" name="ConnectionType" typeConverter="LookupConnectionType">0</property>
+                <property dataType="System.Int32" name="CacheType" typeConverter="CacheType">0</property>
+                <property dataType="System.Int32" name="NoMatchBehavior" typeConverter="LookupNoMatchBehavior">1</property>
+                <property dataType="System.Int32" name="NoMatchCachePercentage">0</property>
+                <property dataType="System.Int32" name="MaxMemoryUsage">25</property>
+                <property dataType="System.Int64" name="MaxMemoryUsage64">25</property>
+                <property dataType="System.String" name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="Id" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Code" dataType="DT_STR" length="20" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="Name" dataType="DT_STR" length="100" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load orders\Lookup Customer by Code.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.demo]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.demo]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\Load orders\Lookup Customer by Code.Inputs[Lookup Input]" name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn refId="Package\Load orders\Lookup Customer by Code.Inputs[Lookup Input].Columns[CustomerCodeNorm]" cachedDataType="str" cachedLength="20" cachedName="CustomerCodeNorm" lineageId="Package\Load orders\Normalize keys.Outputs[Derived Column Output].Columns[CustomerCodeNorm]">
+                      <properties>
+                        <property dataType="System.String" name="JoinToReferenceColumn">Code</property>
+                        <property dataType="System.Null" name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output]" errorOrTruncationOperation="Lookup" errorRowDisposition="IgnoreFailure" exclusionGroup="1" name="Lookup Match Output" synchronousInputId="Package\Load orders\Lookup Customer by Code.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output].Columns[CustomerId]" dataType="i4" lineageId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output].Columns[CustomerId]" name="CustomerId" errorOrTruncationOperation="Copy Column" truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property dataType="System.String" name="CopyFromReferenceColumn">Id</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn refId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output].Columns[CustomerName]" dataType="str" length="100" codePage="1252" lineageId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output].Columns[CustomerName]" name="CustomerName" errorOrTruncationOperation="Copy Column" truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property dataType="System.String" name="CopyFromReferenceColumn">Name</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output refId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup No Match Output]" description="The Lookup output that handles rows with no matching entries in the reference dataset." exclusionGroup="1" name="Lookup No Match Output" synchronousInputId="Package\Load orders\Lookup Customer by Code.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output refId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Error Output]" exclusionGroup="1" isErrorOut="true" name="Lookup Error Output" synchronousInputId="Package\Load orders\Lookup Customer by Code.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Error Output].Columns[ErrorCode]" lineageId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Error Output].Columns[ErrorCode]" name="ErrorCode" dataType="i4" specialFlags="1" />
+                    <outputColumn refId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Error Output].Columns[ErrorColumn]" lineageId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Error Output].Columns[ErrorColumn]" name="ErrorColumn" dataType="i4" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load orders\Lookup Price as-of OrderDate"
+              componentClassID="{671046B0-AA63-4C9F-90E4-C06E0B710CE3}"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Lookup"
+              name="Lookup Price as-of OrderDate"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property dataType="System.String" name="SqlCommand">SELECT Sku, Price, ValidFrom, ValidTo FROM dbo.ProductPrices</property>
+                <property dataType="System.String" name="SqlCommandParam">select * from (SELECT Sku, Price, ValidFrom, ValidTo FROM dbo.ProductPrices) [refTable] where [refTable].[Sku] = ?</property>
+                <property dataType="System.Int32" name="ConnectionType" typeConverter="LookupConnectionType">0</property>
+                <property dataType="System.Int32" name="CacheType" typeConverter="CacheType">0</property>
+                <property dataType="System.Int32" name="NoMatchBehavior" typeConverter="LookupNoMatchBehavior">1</property>
+                <property dataType="System.Int32" name="NoMatchCachePercentage">0</property>
+                <property dataType="System.Int32" name="MaxMemoryUsage">25</property>
+                <property dataType="System.Int64" name="MaxMemoryUsage64">25</property>
+                <property dataType="System.String" name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="Sku" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="Price" dataType="DT_NUMERIC" length="0" precision="10" scale="2" codePage="0"/&gt;&lt;referenceColumn name="ValidFrom" dataType="DT_DATE" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ValidTo" dataType="DT_DATE" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load orders\Lookup Price as-of OrderDate.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.demo]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.demo]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input refId="Package\Load orders\Lookup Price as-of OrderDate.Inputs[Lookup Input]" name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn refId="Package\Load orders\Lookup Price as-of OrderDate.Inputs[Lookup Input].Columns[ProductSkuNorm]" cachedDataType="str" cachedLength="50" cachedName="ProductSkuNorm" lineageId="Package\Load orders\Normalize keys.Outputs[Derived Column Output].Columns[ProductSkuNorm]">
+                      <properties>
+                        <property dataType="System.String" name="JoinToReferenceColumn">Sku</property>
+                        <property dataType="System.Null" name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Match Output]" errorOrTruncationOperation="Lookup" errorRowDisposition="IgnoreFailure" exclusionGroup="1" name="Lookup Match Output" synchronousInputId="Package\Load orders\Lookup Price as-of OrderDate.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Match Output].Columns[UnitPrice]" dataType="numeric" precision="10" scale="2" lineageId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Match Output].Columns[UnitPrice]" name="UnitPrice" errorOrTruncationOperation="Copy Column" truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property dataType="System.String" name="CopyFromReferenceColumn">Price</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output refId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup No Match Output]" description="The Lookup output that handles rows with no matching entries in the reference dataset." exclusionGroup="1" name="Lookup No Match Output" synchronousInputId="Package\Load orders\Lookup Price as-of OrderDate.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output refId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Error Output]" exclusionGroup="1" isErrorOut="true" name="Lookup Error Output" synchronousInputId="Package\Load orders\Lookup Price as-of OrderDate.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Error Output].Columns[ErrorCode]" lineageId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Error Output].Columns[ErrorCode]" name="ErrorCode" dataType="i4" specialFlags="1" />
+                    <outputColumn refId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Error Output].Columns[ErrorColumn]" lineageId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Error Output].Columns[ErrorColumn]" name="ErrorColumn" dataType="i4" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load orders\Conditional Split"
+              componentClassID="{7F88F654-4E20-4D14-84F4-AF9C925D3087}"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Conditional Split"
+              name="Conditional Split"
+              usesDispositions="true"
+              version="0">
+              <inputs>
+                <input refId="Package\Load orders\Conditional Split.Inputs[Conditional Split Input]" name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn refId="Package\Load orders\Conditional Split.Inputs[Conditional Split Input].Columns[CustomerId]" cachedDataType="i4" cachedName="CustomerId" lineageId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output].Columns[CustomerId]" />
+                    <inputColumn refId="Package\Load orders\Conditional Split.Inputs[Conditional Split Input].Columns[UnitPrice]" cachedDataType="numeric" cachedName="UnitPrice" lineageId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Match Output].Columns[UnitPrice]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output refId="Package\Load orders\Conditional Split.Outputs[complete]" exclusionGroup="1" name="complete" synchronousInputId="Package\Load orders\Conditional Split.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property dataType="System.String" name="FriendlyExpression">!ISNULL(CustomerId) &amp;&amp; !ISNULL(UnitPrice)</property>
+                    <property dataType="System.String" name="Expression">!ISNULL(CustomerId) &amp;&amp; !ISNULL(UnitPrice)</property>
+                    <property dataType="System.Int32" name="EvaluationOrder">0</property>
+                  </properties>
+                  <outputColumns />
+                  <externalMetadataColumns />
+                </output>
+                <output refId="Package\Load orders\Conditional Split.Outputs[missing customer or price]" exclusionGroup="1" name="missing customer or price" synchronousInputId="Package\Load orders\Conditional Split.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property dataType="System.Boolean" name="IsDefaultOut">true</property>
+                  </properties>
+                  <outputColumns />
+                  <externalMetadataColumns />
+                </output>
+                <output refId="Package\Load orders\Conditional Split.Outputs[Conditional Split Error Output]" exclusionGroup="1" isErrorOut="true" name="Conditional Split Error Output" synchronousInputId="Package\Load orders\Conditional Split.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]" lineageId="Package\Load orders\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]" name="ErrorCode" dataType="i4" specialFlags="1" />
+                    <outputColumn refId="Package\Load orders\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]" lineageId="Package\Load orders\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]" name="ErrorColumn" dataType="i4" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load orders\StagingOrders"
+              componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="StagingOrders"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property dataType="System.Int32" name="CommandTimeout">0</property>
+                <property dataType="System.String" name="OpenRowset">[dbo].[StagingOrders]</property>
+                <property dataType="System.String" name="OpenRowsetVariable"></property>
+                <property dataType="System.String" name="SqlCommand"></property>
+                <property dataType="System.Int32" name="DefaultCodePage">1252</property>
+                <property dataType="System.Boolean" name="AlwaysUseDefaultCodePage">false</property>
+                <property dataType="System.Int32" name="AccessMode" typeConverter="AccessMode">3</property>
+                <property dataType="System.Boolean" name="FastLoadKeepIdentity">false</property>
+                <property dataType="System.Boolean" name="FastLoadKeepNulls">false</property>
+                <property dataType="System.String" name="FastLoadOptions">TABLOCK</property>
+                <property dataType="System.Int32" name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load orders\StagingOrders.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.demo]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.demo]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input errorOrTruncationOperation="Insert" errorRowDisposition="FailComponent" hasSideEffects="true" refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input]" name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].Columns[OrderId]" cachedDataType="i4" cachedName="OrderId" externalMetadataColumnId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[OrderId]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderId]" />
+                    <inputColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].Columns[OrderDate]" cachedDataType="date" cachedName="OrderDate" externalMetadataColumnId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderDate]" />
+                    <inputColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].Columns[CustomerId]" cachedDataType="i4" cachedName="CustomerId" externalMetadataColumnId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[CustomerId]" lineageId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output].Columns[CustomerId]" />
+                    <inputColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].Columns[CustomerName]" cachedDataType="str" cachedLength="100" cachedName="CustomerName" externalMetadataColumnId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[CustomerName]" lineageId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output].Columns[CustomerName]" />
+                    <inputColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].Columns[ProductSku]" cachedDataType="str" cachedLength="50" cachedName="ProductSku" externalMetadataColumnId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[ProductSku]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[ProductSku]" />
+                    <inputColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].Columns[Quantity]" cachedDataType="i4" cachedName="Quantity" externalMetadataColumnId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[Quantity]" />
+                    <inputColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].Columns[UnitPrice]" cachedDataType="numeric" cachedName="UnitPrice" externalMetadataColumnId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]" lineageId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Match Output].Columns[UnitPrice]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[OrderId]" name="OrderId" dataType="i4" />
+                    <externalMetadataColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]" name="OrderDate" dataType="date" />
+                    <externalMetadataColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[CustomerId]" name="CustomerId" dataType="i4" />
+                    <externalMetadataColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[CustomerName]" name="CustomerName" dataType="str" length="100" codePage="1252" />
+                    <externalMetadataColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[ProductSku]" name="ProductSku" dataType="str" length="50" codePage="1252" />
+                    <externalMetadataColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[Quantity]" name="Quantity" dataType="i4" />
+                    <externalMetadataColumn refId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input].ExternalColumns[UnitPrice]" name="UnitPrice" dataType="numeric" precision="10" scale="2" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output exclusionGroup="1" isErrorOut="true" refId="Package\Load orders\StagingOrders.Outputs[OLE DB Destination Error Output]" name="OLE DB Destination Error Output" synchronousInputId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\StagingOrders.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]" lineageId="Package\Load orders\StagingOrders.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]" name="ErrorCode" dataType="i4" specialFlags="1" />
+                    <outputColumn refId="Package\Load orders\StagingOrders.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]" lineageId="Package\Load orders\StagingOrders.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]" name="ErrorColumn" dataType="i4" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load orders\Error rows"
+              componentClassID="{8DA75FED-1B7C-407D-B2AD-2B24209CCCA4}"
+              contactInfo="Flat File Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Flat File Destination"
+              name="Error rows"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property dataType="System.Boolean" name="Overwrite">true</property>
+                <property dataType="System.Boolean" name="Header">true</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Load orders\Error rows.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Errors CSV]"
+                  connectionManagerRefId="Package.ConnectionManagers[Errors CSV]"
+                  name="FlatFileConnection" />
+              </connections>
+              <inputs>
+                <input errorOrTruncationOperation="Insert" errorRowDisposition="FailComponent" hasSideEffects="true" refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input]" name="Flat File Destination Input">
+                  <inputColumns>
+                    <inputColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].Columns[OrderId]" cachedDataType="i4" cachedName="OrderId" externalMetadataColumnId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[OrderId]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderId]" />
+                    <inputColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].Columns[OrderDate]" cachedDataType="date" cachedName="OrderDate" externalMetadataColumnId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[OrderDate]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[OrderDate]" />
+                    <inputColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].Columns[CustomerCode]" cachedDataType="str" cachedLength="20" cachedName="CustomerCode" externalMetadataColumnId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[CustomerCode]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[CustomerCode]" />
+                    <inputColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].Columns[ProductSku]" cachedDataType="str" cachedLength="50" cachedName="ProductSku" externalMetadataColumnId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[ProductSku]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[ProductSku]" />
+                    <inputColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].Columns[Quantity]" cachedDataType="i4" cachedName="Quantity" externalMetadataColumnId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[Quantity]" lineageId="Package\Load orders\Orders.Outputs[Flat File Source Output].Columns[Quantity]" />
+                  </inputColumns>
+                  <externalMetadataColumns isUsed="True">
+                    <externalMetadataColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[OrderId]" name="OrderId" dataType="i4" />
+                    <externalMetadataColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[OrderDate]" name="OrderDate" dataType="date" />
+                    <externalMetadataColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[CustomerCode]" name="CustomerCode" dataType="str" length="20" codePage="1252" />
+                    <externalMetadataColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[ProductSku]" name="ProductSku" dataType="str" length="50" codePage="1252" />
+                    <externalMetadataColumn refId="Package\Load orders\Error rows.Inputs[Flat File Destination Input].ExternalColumns[Quantity]" name="Quantity" dataType="i4" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output exclusionGroup="1" isErrorOut="true" refId="Package\Load orders\Error rows.Outputs[Flat File Destination Error Output]" name="Flat File Destination Error Output" synchronousInputId="Package\Load orders\Error rows.Inputs[Flat File Destination Input]">
+                  <outputColumns>
+                    <outputColumn refId="Package\Load orders\Error rows.Outputs[Flat File Destination Error Output].Columns[ErrorCode]" lineageId="Package\Load orders\Error rows.Outputs[Flat File Destination Error Output].Columns[ErrorCode]" name="ErrorCode" dataType="i4" specialFlags="1" />
+                    <outputColumn refId="Package\Load orders\Error rows.Outputs[Flat File Destination Error Output].Columns[ErrorColumn]" lineageId="Package\Load orders\Error rows.Outputs[Flat File Destination Error Output].Columns[ErrorColumn]" name="ErrorColumn" dataType="i4" specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path refId="Package\Load orders.Paths[Flat File Source Output]" endId="Package\Load orders\Normalize keys.Inputs[Derived Column Input]" name="Flat File Source Output" startId="Package\Load orders\Orders.Outputs[Flat File Source Output]" />
+            <path refId="Package\Load orders.Paths[Derived Column Output]" endId="Package\Load orders\Lookup Customer by Code.Inputs[Lookup Input]" name="Derived Column Output" startId="Package\Load orders\Normalize keys.Outputs[Derived Column Output]" />
+            <path refId="Package\Load orders.Paths[Lookup Match Output]" endId="Package\Load orders\Lookup Price as-of OrderDate.Inputs[Lookup Input]" name="Lookup Match Output" startId="Package\Load orders\Lookup Customer by Code.Outputs[Lookup Match Output]" />
+            <path refId="Package\Load orders.Paths[Lookup Match Output1]" endId="Package\Load orders\Conditional Split.Inputs[Conditional Split Input]" name="Lookup Match Output" startId="Package\Load orders\Lookup Price as-of OrderDate.Outputs[Lookup Match Output]" />
+            <path refId="Package\Load orders.Paths[complete]" endId="Package\Load orders\StagingOrders.Inputs[OLE DB Destination Input]" name="complete" startId="Package\Load orders\Conditional Split.Outputs[complete]" />
+            <path refId="Package\Load orders.Paths[missing customer or price]" endId="Package\Load orders\Error rows.Inputs[Flat File Destination Input]" name="missing customer or price" startId="Package\Load orders\Conditional Split.Outputs[missing customer or price]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\MERGE staging into Orders"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{44444444-4444-4444-8444-444444444444}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="MERGE staging into Orders"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"
+          SQLTask:Connection="{C1D2E3F4-A5B6-4789-8C9D-0E1F2A3B4C5D}"
+          SQLTask:SqlStatementSource="MERGE INTO dbo.Orders AS dest&#xA;USING dbo.StagingOrders AS src&#xA;ON dest.OrderId = src.OrderId&#xA;WHEN MATCHED THEN UPDATE SET OrderDate = src.OrderDate, CustomerId = src.CustomerId, CustomerName = src.CustomerName, ProductSku = src.ProductSku, Quantity = src.Quantity, UnitPrice = src.UnitPrice&#xA;WHEN NOT MATCHED THEN INSERT (OrderId, OrderDate, CustomerId, CustomerName, ProductSku, Quantity, UnitPrice) VALUES (src.OrderId, src.OrderDate, src.CustomerId, src.CustomerName, src.ProductSku, src.Quantity, src.UnitPrice);" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Write row counts"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{55555555-5555-4555-8555-555555555555}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Write row counts"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask"
+          SQLTask:Connection="{C1D2E3F4-A5B6-4789-8C9D-0E1F2A3B4C5D}"
+          SQLTask:SqlStatementSource="SELECT COUNT(*) AS StagingCount FROM dbo.StagingOrders; SELECT COUNT(*) AS OrderCount FROM dbo.Orders;" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint1]"
+      DTS:CreationName=""
+      DTS:DTSID="{66111111-1111-4111-8111-111111111111}"
+      DTS:From="Package\Create tables if missing"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint1"
+      DTS:To="Package\Truncate staging" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint2]"
+      DTS:CreationName=""
+      DTS:DTSID="{66222222-2222-4222-8222-222222222222}"
+      DTS:From="Package\Truncate staging"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint2"
+      DTS:To="Package\Load orders" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint3]"
+      DTS:CreationName=""
+      DTS:DTSID="{66333333-3333-4333-8333-333333333333}"
+      DTS:From="Package\Load orders"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint3"
+      DTS:To="Package\MERGE staging into Orders" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint4]"
+      DTS:CreationName=""
+      DTS:DTSID="{66444444-4444-4444-8444-444444444444}"
+      DTS:From="Package\MERGE staging into Orders"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint4"
+      DTS:To="Package\Write row counts" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package.-->
+<Objects Version="sql11">
+  <Package design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout Size="240,42" Id="Package\Create tables if missing" TopLeft="280,40" />
+        <NodeLayout Size="240,42" Id="Package\Truncate staging" TopLeft="280,130" />
+        <NodeLayout Size="240,42" Id="Package\Load orders" TopLeft="280,220" />
+        <NodeLayout Size="240,42" Id="Package\MERGE staging into Orders" TopLeft="280,310" />
+        <NodeLayout Size="240,42" Id="Package\Write row counts" TopLeft="280,400" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost design-time-name="Package\Load orders">
+    <LayoutInfo>
+      <GraphLayout Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout Size="240,42" Id="Package\Load orders\Orders" TopLeft="280,30" />
+        <NodeLayout Size="240,42" Id="Package\Load orders\Normalize keys" TopLeft="280,110" />
+        <NodeLayout Size="240,42" Id="Package\Load orders\Lookup Customer by Code" TopLeft="280,190" />
+        <NodeLayout Size="240,42" Id="Package\Load orders\Lookup Price as-of OrderDate" TopLeft="280,270" />
+        <NodeLayout Size="240,42" Id="Package\Load orders\Conditional Split" TopLeft="280,350" />
+        <NodeLayout Size="180,42" Id="Package\Load orders\StagingOrders" TopLeft="80,450" />
+        <NodeLayout Size="180,42" Id="Package\Load orders\Error rows" TopLeft="420,450" />
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
